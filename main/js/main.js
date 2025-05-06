@@ -1,26 +1,8 @@
 // main.js - Landing page interactions
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 70, // Adjust for navbar height
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-    
     // Form submission handling
-    const ctaForm = document.querySelector('.cta-form');
+    const ctaForm = document.querySelector('.feedback-form');
     if (ctaForm) {
         ctaForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -36,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Form submitted with values:', formValues);
             
             // Show success message
-            alert('Thank you for your interest! We will contact you soon.');
+            alert('Thank you for your feedback! It helps us improve.');
             this.reset();
         });
     }
@@ -53,10 +35,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.classList.add('active');
             }
         });
+        
+        // Check if ranks section is in view to animate bars
+        const ranksSection = document.querySelector('.ranks');
+        if (ranksSection) {
+            const ranksSectionPosition = ranksSection.getBoundingClientRect();
+            if (ranksSectionPosition.top < window.innerHeight - 200 && ranksSectionPosition.bottom > 0) {
+                ranksSection.classList.add('in-view');
+            }
+        }
+    }
+    
+    // Initialize bar chart on load
+    function initBarChart() {
+        const bars = document.querySelectorAll('.bar');
+        bars.forEach(bar => {
+            const value = bar.getAttribute('data-value');
+            const barFill = bar.querySelector('.bar-fill');
+            
+            // Set initial width to 0 (animation will handle the rest)
+            barFill.style.width = '0%';
+        });
     }
     
     // Check on scroll and initial load
     window.addEventListener('scroll', checkScroll);
+    initBarChart();
     checkScroll(); // Check on page load
     
     // Simple testimonial slider functionality

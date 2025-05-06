@@ -10,7 +10,32 @@
 </head>
 <body>
     <!-- Navigation Bar -->
-    <iframe src="includes/navbar.html" width="100%" height="70px" frameborder="0" scrolling="no"></iframe>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="logo">E<span>well</span></a>
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" id="home" class="active">Home</a></li>
+                <li><a href="#news" id="news-link">News</a></li>
+                <li><a href="#ranks" id="ranks-link">Ranks</a></li>
+                <li><a href="#locations" id="locations-link">Locations</a></li>
+                <li><a href="#feedback" id="feedback-link">Feedbacks</a></li>
+            </ul>
+            <div class="search-container">
+                <div class="search-bar" id="searchBar">
+                    <input type="text" placeholder="Search..." class="search-input" id="searchInput">
+                    <button class="search-icon" onclick="toggleSearch()">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                        </svg>
+                    </button>
+                </div>
+                <button class="login-btn">Login</button>
+            </div>
+        </div>
+    </nav>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -25,13 +50,13 @@
             </div>
             <div class="hero-images">
                 <div class="image-container main-image">
-                    <img src="https://source.unsplash.com/random/600x800/?doctor" alt="Healthcare Professional">
+                    <img src="image/pic/1.jpg" alt="Healthcare Professional">
                 </div>
                 <div class="image-container top-image">
-                    <img src="https://source.unsplash.com/random/600x400/?medical" alt="Medical Services">
+                    <img src="image/pic/2.jpg" alt="Medical Services">
                 </div>
                 <div class="image-container bottom-image">
-                    <img src="https://source.unsplash.com/random/600x400/?health" alt="Wellness">
+                    <img src="image/pic/3.jpg" alt="Wellness">
                 </div>
             </div>
         </div>
@@ -46,35 +71,35 @@
         <div class="news-grid">
             <div class="news-card">
                 <div class="news-image">
-                    <img src="https://source.unsplash.com/random/600x400/?medical-research" alt="Medical Research">
+                    <img src="image/pic/5.jpg" alt="Medical Research">
                 </div>
                 <div class="news-content">
-                    <div class="news-date">June 15, 2023</div>
-                    <h3>Breakthrough in Cancer Treatment Shows Promise</h3>
-                    <p>Researchers have developed a new approach to target cancer cells with unprecedented precision, potentially reducing side effects.</p>
-                    <a href="#" class="read-more">Read More</a>
+                    <div class="news-date">April 28, 2025</div>
+                    <h3>SOCCSKSARGEN logs 2 mpox cases</h3>
+                    <p>The Department of Health-SOCCSKSARGEN (DOH-12) has confirmed that the region has recorded two cases of monkeypox (mpox) Clade II.</p>
+                    <a href="https://www.gmanetwork.com/regionaltv/news/107761/soccsksargen-logs-2-mpox-cases/story/?fbclid=IwY2xjawKGk5pleHRuA2FlbQIxMABicmlkETFRYVVBTGQ1M1hCM0JkaFM0AR79euaAfNs0A5thlmuYK4tp1-qprVVuSOQj6rFUSPaEQtaKuZgRp0ueQJhnZA_aem_G5czurrMrzOCX1SiZ98kDQ/" class="read-more">Read More</a>
                 </div>
             </div>
             <div class="news-card">
                 <div class="news-image">
-                    <img src="https://source.unsplash.com/random/600x400/?vaccine" alt="Vaccination">
+                    <img src="image/pic/6.jpg" alt="Vaccination">
                 </div>
                 <div class="news-content">
-                    <div class="news-date">June 10, 2023</div>
-                    <h3>New Vaccine Development Accelerates</h3>
-                    <p>Scientists are making significant strides in developing vaccines for previously untreatable conditions using innovative technologies.</p>
-                    <a href="#" class="read-more">Read More</a>
+                    <div class="news-date">April 2, 2025</div>
+                    <h3>SOCCSKSARGEN sets new standard for immunization</h3>
+                    <p>To address declining immunization rates, the 2nd SOCCSKSARGEN Immunization Summit was recently held in Koronadal City. The event aimed to strengthen partnerships and strategies to improve child health in the region. </p>
+                    <a href="https://pia.gov.ph/soccsksargen-sets-new-standard-for-immunization/" class="read-more">Read More</a>
                 </div>
             </div>
             <div class="news-card">
                 <div class="news-image">
-                    <img src="https://source.unsplash.com/random/600x400/?mental-health" alt="Mental Health">
+                    <img src="image/pic/7.jpg" alt="Mental Health">
                 </div>
                 <div class="news-content">
-                    <div class="news-date">June 5, 2023</div>
-                    <h3>Mental Health Support Expands Nationwide</h3>
-                    <p>New initiatives are making mental health resources more accessible to communities previously underserved by healthcare systems.</p>
-                    <a href="#" class="read-more">Read More</a>
+                    <div class="news-date">November 5, 2024</div>
+                    <h3>Dengue claims 79 lives in Region 12</h3>
+                    <p>As of October 2024, Region 12 reported a total of 20,369 dengue cases, resulting in 79 deaths. The majority of cases (62%) were among individuals aged 19 and below. </p>
+                    <a href="https://mindanews.com/top-stories/2024/11/dengue-claims-79-lives-in-region-12/" class="read-more">Read More</a>
                 </div>
             </div>
         </div>
@@ -86,37 +111,38 @@
     <!-- Features Section -->
     <section class="features" id="services">
         <div class="section-header">
-            <h2>Why Choose Ewell</h2>
+            <h2> Get help for the following topics</h2>
             <p>Comprehensive care tailored to your individual needs</p>
         </div>
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon">
-                    <img src="" alt="Expert Professionals">
+                    <img src="image/1.png" alt="Physical Well-being">
                 </div>
-                <h3>Expert Professionals</h3>
-                <p>Our team consists of experienced healthcare specialists dedicated to providing the highest quality care.</p>
+                <h3>Physical Well-being</h3>
+                <p>Our team is committed to promoting physical well-being through guided fitness programs, health education, and personalized support.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
-                    <img src="https://source.unsplash.com/random/150x150/?heartbeat" alt="Personalized Care">
+                    <img src="image/2.png" alt="Financial Well-being">
                 </div>
-                <h3>Personalized Care</h3>
-                <p>We develop customized treatment plans that address your unique health concerns and goals.</p>
+                <h3>Financial Well-being</h3>
+                <p>Experienced professionals providing personalized guidance, educational resources, and tools to support your financial well-being and long-term financial goals.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
-                    <img src="https://source.unsplash.com/random/150x150/?calendar" alt="Easy Scheduling">
+                    <img src="image/4.png" alt="Emotional & Mental">
                 </div>
-                <h3>Easy Scheduling</h3>
-                <p>Book appointments online, manage your schedule, and receive timely reminders for your visits.</p>
+                <h3>Emotional & Mental Well-being</h3>
+                <p>Compassionate support, expert care, and practical resources to help you navigate life's challenges and strengthen your emotional and mental well-being.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">
-                    <img src="https://source.unsplash.com/random/150x150/?mobile-health" alt="Digital Health">
+                    <img src="image/5.png" alt="Social Well-being">
                 </div>
-                <h3>Digital Health</h3>
-                <p>Access your health records, communicate with your doctor, and track your progress through our digital platform.</p>
+                <h3>Social Well-being</h3>
+                <p>Foster meaningful connections, build a sense of belonging, and engage in activities that strengthen community and social support.
+                </p>
             </div>
         </div>
     </section>
@@ -124,60 +150,65 @@
     <!-- Ranks Section -->
     <section class="ranks" id="ranks">
         <div class="section-header">
-            <h2>Top Healthcare Rankings</h2>
-            <p>Recognized excellence in healthcare services</p>
+            <h2>Top Quiz Performers</h2>
+            <p>Congratulations to our health knowledge champions</p>
         </div>
         <div class="ranks-container">
-            <div class="rank-card">
-                <div class="rank-number">#1</div>
-                <div class="rank-content">
-                    <h3>Patient Satisfaction</h3>
-                    <p>Rated highest in patient satisfaction across regional healthcare providers for three consecutive years.</p>
-                    <div class="rank-stats">
-                        <div class="stat">
-                            <span class="stat-value">98%</span>
-                            <span class="stat-label">Patient Satisfaction</span>
+            <div class="chart-container">
+                <div class="bar-chart">
+                    <div class="bar-container">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <img src="https://source.unsplash.com/random/100x100/?portrait1" alt="Top User">
+                            </div>
+                            <div class="user-details">
+                                <h3>Maria Santos</h3>
+                                <p>General Health</p>
+                            </div>
                         </div>
-                        <div class="stat">
-                            <span class="stat-value">4.9</span>
-                            <span class="stat-label">Average Rating</span>
+                        <div class="bar" data-value="95">
+                            <div class="bar-fill bar-fill-1"></div>
+                            <div class="bar-value">95 Points</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bar-container">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <img src="https://source.unsplash.com/random/100x100/?portrait2" alt="Second User">
+                            </div>
+                            <div class="user-details">
+                                <h3>James Wilson</h3>
+                                <p>Nutrition Expert</p>
+                            </div>
+                        </div>
+                        <div class="bar" data-value="82">
+                            <div class="bar-fill bar-fill-2"></div>
+                            <div class="bar-value">82 Points</div>
+                        </div>
+    </div>
+    
+                    <div class="bar-container">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <img src="https://source.unsplash.com/random/100x100/?portrait3" alt="Third User">
+                            </div>
+                            <div class="user-details">
+                                <h3>Sarah Johnson</h3>
+                                <p>Fitness Enthusiast</p>
+                            </div>
+                        </div>
+                        <div class="bar" data-value="78">
+                            <div class="bar-fill bar-fill-3"></div>
+                            <div class="bar-value">78 Points</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="rank-card">
-                <div class="rank-number">#2</div>
-                <div class="rank-content">
-                    <h3>Treatment Success Rate</h3>
-                    <p>Our innovative approaches and dedicated staff have achieved exceptional treatment outcomes for our patients.</p>
-                    <div class="rank-stats">
-                        <div class="stat">
-                            <span class="stat-value">94%</span>
-                            <span class="stat-label">Success Rate</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-value">30%</span>
-                            <span class="stat-label">Above Average</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="rank-card">
-                <div class="rank-number">#3</div>
-                <div class="rank-content">
-                    <h3>Technological Innovation</h3>
-                    <p>Implementing cutting-edge technology to enhance diagnosis, treatment, and patient experience.</p>
-                    <div class="rank-stats">
-                        <div class="stat">
-                            <span class="stat-value">$15M</span>
-                            <span class="stat-label">Tech Investment</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-value">12</span>
-                            <span class="stat-label">Innovation Awards</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="ranks-cta">
+                <h3>Test Your Health Knowledge</h3>
+                <p>Take our health quizzes and see if you can make it to the leaderboard!</p>
+                <a href="quiz.html" class="btn primary-btn">Start Quiz</a>
             </div>
         </div>
     </section>
@@ -191,43 +222,43 @@
         <div class="locations-grid">
             <div class="location-card">
                 <div class="location-image">
-                    <img src="https://source.unsplash.com/random/600x400/?park" alt="Central Park">
+                    <img src="image/pic/8.jpg" alt="Central Park">
                 </div>
                 <div class="location-content">
-                    <h3>Central Community Park</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> 123 Park Avenue, Downtown</p>
-                    <p>Hosting weekly yoga sessions, health screenings, and fitness classes in a beautiful outdoor setting.</p>
+                    <h3>MADZ Badminton Court</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Zone 3, Koronadal City, 9506 South Cotabato</p>
+                    <p></p>
                     <div class="upcoming-event">
-                        <span class="event-date">June 20, 2023</span>
-                        <span class="event-name">Community Wellness Day</span>
+                        <span class="event-date">May 6, 2025</span>
+                        <span class="event-name">Wellness Day</span>
                     </div>
                 </div>
             </div>
             <div class="location-card">
                 <div class="location-image">
-                    <img src="https://source.unsplash.com/random/600x400/?convention-center" alt="Convention Center">
+                    <img src="image/pic/10.jpg" alt="Convention Center">
                 </div>
                 <div class="location-content">
-                    <h3>Metropolitan Convention Center</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> 456 Expo Boulevard, Midtown</p>
-                    <p>Our largest event venue for health conferences, educational seminars, and wellness expos.</p>
+                    <h3>EMR Center</h3>
+                    <p><i class="fas fa-map-marker-alt"></i>GR5M+V76, Gensan Dr, Koronadal City, South Cotabato, Philippines</p>
+                    <p></p>
                     <div class="upcoming-event">
-                        <span class="event-date">July 5-7, 2023</span>
-                        <span class="event-name">Annual Health Summit</span>
+                        <span class="event-date">May 6, 2025</span>
+                        <span class="event-name">Wellness Day</span>
                     </div>
                 </div>
             </div>
             <div class="location-card">
                 <div class="location-image">
-                    <img src="https://source.unsplash.com/random/600x400/?community-center" alt="Community Center">
+                    <img src="image/pic/9.jpg" alt="Community Center">
                 </div>
                 <div class="location-content">
-                    <h3>Riverside Community Center</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> 789 Riverside Drive, Eastside</p>
-                    <p>A welcoming space for support groups, health education classes, and small wellness workshops.</p>
+                    <h3>South Cotabato Sports Complex</h3>
+                    <p><i class="fas fa-map-marker-alt"></i>FRWQ+RXJ Koronadal City, South Cotabato, Philippines</p>
+                    <p></p>
                     <div class="upcoming-event">
                         <span class="event-date">June 25, 2023</span>
-                        <span class="event-name">Nutrition Workshop Series</span>
+                        <span class="event-name">Wellness Day</span>
                     </div>
                 </div>
             </div>
@@ -235,10 +266,18 @@
         <div class="map-container">
             <h3>Find Locations Near You</h3>
             <div class="map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.3059445135!2d-74.25986548248684!3d40.69714941932609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1655982080461!5m2!1sen!2s" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63330.17341775837!2d124.81625243372904!3d6.497395599999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x32f81891a5db47b7%3A0xbc86d7213a5db1c8!2sKoronadal%20City%2C%20South%20Cotabato%2C%20Philippines!5e0!3m2!1sen!2s!4v1683101234567!5m2!1sen!2s"
+                    width="100%" 
+                    height="450" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
         </div>
-    </section>
+        </section>
 
     <!-- Feedback Section -->
     <section class="feedback" id="feedback">

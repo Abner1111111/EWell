@@ -1,5 +1,5 @@
-/* Reset and base styles */
-* {
+   /* Reset and base styles */
+   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -625,7 +625,7 @@ section {
 /* News Section */
 .news {
     background-color: var(--bg-color);
-    padding: 5rem 2rem;
+    padding: 1rem 2rem;
 }
 
 .news-grid {
@@ -714,7 +714,7 @@ section {
 /* Ranks Section */
 .ranks {
     background-color: var(--bg-secondary);
-    padding: 5rem 2rem;
+    padding: 1rem 3rem;
 }
 
 .ranks-container {
@@ -722,63 +722,146 @@ section {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 3rem;
 }
 
-.rank-card {
+.chart-container {
     background-color: white;
-    border-radius: 8px;
+    border-radius: 12px;
     box-shadow: var(--box-shadow);
-    display: flex;
-    overflow: hidden;
-}
-
-.rank-number {
-    width: 120px;
-    background-color: var(--primary-color);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    font-weight: 700;
-}
-
-.rank-content {
-    flex: 1;
     padding: 2rem;
 }
 
-.rank-content h3 {
-    color: var(--dark-color);
-    margin-bottom: 0.8rem;
-    font-size: 1.5rem;
-}
-
-.rank-content p {
-    color: #666;
-    margin-bottom: 1.5rem;
-}
-
-.rank-stats {
+.bar-chart {
     display: flex;
+    flex-direction: column;
     gap: 2rem;
 }
 
-.stat {
+.bar-container {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
 }
 
-.stat-value {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--accent-color);
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 220px;
 }
 
-.stat-label {
-    font-size: 0.9rem;
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--primary-color);
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-details h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: var(--dark-color);
+}
+
+.user-details p {
+    font-size: 0.85rem;
     color: #666;
+}
+
+.bar {
+    flex: 1;
+    height: 40px;
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    transition: width 1.5s ease-in-out;
+    width: 0;
+}
+
+.bar-fill-1 {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+.bar-fill-2 {
+    background: linear-gradient(90deg, #5B8E7D, #729D8C);
+}
+
+.bar-fill-3 {
+    background: linear-gradient(90deg, #F4A259, #F4B576);
+}
+
+.bar-value {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+.ranks-cta {
+    text-align: center;
+    background-color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+}
+
+.ranks-cta h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+}
+
+.ranks-cta p {
+    margin-bottom: 1.5rem;
+    color: #666;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Animation for bar chart to load on scroll */
+.ranks.in-view .bar-fill-1 {
+    width: 95%;
+}
+
+.ranks.in-view .bar-fill-2 {
+    width: 82%;
+}
+
+.ranks.in-view .bar-fill-3 {
+    width: 78%;
+}
+
+@media (max-width: 768px) {
+    .bar-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .user-info {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    .bar {
+        width: 100%;
+    }
 }
 
 /* Locations Section */
