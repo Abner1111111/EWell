@@ -482,7 +482,7 @@ section {
 .contact-list li i {
     margin-right: 10px;
     margin-top: 5px;
-    color: var(--primary-color);
+    color: var(--secondary-color);
 }
 
 .footer-bottom {
