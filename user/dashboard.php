@@ -30,6 +30,9 @@
                     <a href="#"><i class="fas fa-dumbbell"></i> Workouts</a>
                 </li>
                 <li>
+                    <a href="tools.php"><i class="fas fa-clock"></i>Tools</a>
+                </li>
+                <li>
                     <a href="#"><i class="fas fa-cog"></i> Settings</a>
                 </li>
             </ul>
