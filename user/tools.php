@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .tool-icon {
             font-size: 2.5rem;
-            color: #4CAF50;
+            color: #8CB369;
             margin-bottom: 15px;
         }
 
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             padding: 10px 15px;
             border: none;
             border-radius: 5px;
-            background-color: #4CAF50;
+            background-color: #8CB369;
             color: white;
             font-size: 1rem;
             cursor: pointer;
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .tool-card button:hover {
-            background-color: #45a049;
+            background-color: #8CB369;
         }
 
 
