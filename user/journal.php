@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <div class="journal-container">
         <!-- Sidebar Navigation -->
@@ -81,11 +83,13 @@
                     <form id="journalForm" class="journal-form">
                         <div class="form-group">
                             <label for="entryTitle">Title</label>
-                            <input type="text" id="entryTitle" name="title" placeholder="Give your entry a title" required>
+                            <input type="text" id="entryTitle" name="title" placeholder="Give your entry a title"
+                                required>
                         </div>
                         <div class="form-group">
                             <label for="entryContent">Your Thoughts</label>
-                            <textarea id="entryContent" name="content" rows="10" placeholder="Write your thoughts here..." required></textarea>
+                            <textarea id="entryContent" name="content" rows="10"
+                                placeholder="Write your thoughts here..." required></textarea>
                         </div>
                         <div class="form-group mood-selector">
                             <label>How are you feeling today?</label>
@@ -138,7 +142,8 @@
                                 <span class="mood-icon">😊</span>
                                 <span class="mood-text">Happy</span>
                             </div>
-                            <p class="entry-preview">Started the day with a peaceful meditation session. Feeling grateful for the beautiful weather...</p>
+                            <p class="entry-preview">Started the day with a peaceful meditation session. Feeling
+                                grateful for the beautiful weather...</p>
                             <div class="entry-tags">
                                 <span class="tag">meditation</span>
                                 <span class="tag">gratitude</span>
@@ -166,4 +171,5 @@
 
     <script src="../js/journal.js"></script>
 </body>
-</html> 
+
+</html>
