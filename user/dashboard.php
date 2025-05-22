@@ -55,6 +55,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="tools.php">
+                        <i class="fas fa-tools"></i>
+                        <span>Tools</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="settings.php">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
@@ -69,7 +76,7 @@
                 <h1>Welcome to EWell</h1>
                 <div class="user-info">
                     <span class="user-name"><?php echo $_SESSION['user_name'] ?? 'User'; ?></span>
-                    <a href="logout.php" class="logout-btn">
+                    <a href="../logout.php" class="logout-btn">
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </a>
