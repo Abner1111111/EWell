@@ -218,7 +218,8 @@ function initQuoteSystem() {
         "You are stronger than you think.",
         "Find peace in the present moment.",
         "Your calm mind is the ultimate weapon against challenges.",
-        "Breathe in possibility, breathe out doubt."
+        "Breathe in possibility, breathe out doubt.",
+        "DIE"
     ];
 
     const quoteDisplay = document.getElementById('daily-quote');

@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         .tool-icon {
             font-size: 2.5rem;
-            color: #4CAF50;
+            color: #8CB369;
             margin-bottom: 15px;
         }
 
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             padding: 10px 15px;
             border: none;
             border-radius: 5px;
-            background-color: #4CAF50;
+            background-color: #8CB369;
             color: white;
             font-size: 1rem;
             cursor: pointer;
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .tool-card button:hover {
-            background-color: #45a049;
+            background-color: #A0C878;
         }
 
 
@@ -316,6 +316,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <button id="openCalorieModal">Calorie Counter</button>
                     </div>
 
+                    <!-- calorie modal -->
                     <div id="calorieModal" class="modal">
                         <div class="modal-content">
                             <span class="close" id="closeCalorieModal">&times;</span>
@@ -347,6 +348,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                             <?php endif; ?>
 
+                        </div>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-glass-water"></i>
+                        </div>
+                        <button id="openCalorieModal">Hydration Tracker</button>
+                    </div>
+
+                    <!-- hydration modal -->
+                     <div id="hydrationModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" id="closeHydrationModal">&times;</span>
+                            <h3>Hydration Tracker</h3>
+                            <form method="POST">
+                        <input type="number" step="0.1" name="water_intake" placeholder="Water intake (L)" required>
+                        <button type="submit">Log Water</button>
+                    </form>
+
+                            <?php if (isset($bmi)): ?>
+                                <div class="result-box">
+                                    <p>Your BMI is: <strong><?= $bmi ?></strong></p>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
