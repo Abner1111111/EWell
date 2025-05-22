@@ -31,7 +31,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="manage_user.php">
                         <i class="fa-solid fa-users"></i>
                         <span>Manage Users</span>
                     </a>
@@ -46,6 +46,12 @@
                     <a href="#">
                         <i class="fa-solid fa-star"></i>
                         <span>View Scores</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-star"></i>
+                        <span>Account Settings</span>
                     </a>
                 </li>
             </ul>
