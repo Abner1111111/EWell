@@ -5,22 +5,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EWell - Dashboard</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/User_dashboard.css">
-     <link rel="stylesheet" href="../css/User_header.css">
 </head>
 
 <body>
     <div class="dashboard-container">
-
-        <!-- Header Navigation -->
-        <?php include 'includes/header.php'?>
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>EWell</h2>
+            </div>
+            <ul class="nav-links">
+                <li>
+                    <a href="dashboard.php" class="active">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="create_quiz.php">
+                        <i class="fa-solid fa-pencil"></i>
+                        <span>Create Quiz</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="manage_user.php">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Manage Users</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>Announcements</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-star"></i>
+                        <span>View Scores</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="account_setting.php">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Account Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
         <!-- Main Content -->
         <main class="main-content">
             <header class="content-header">
                 <h1>Welcome to EWell</h1>
+                <div class="user-info">
+                    <span class="user-name"><?php echo $_SESSION['user_name'] ?? 'User'; ?></span>
+                    <a href="logout.php" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </div>
             </header>
 
             <!-- Wellness Overview -->
@@ -148,7 +195,8 @@
             </section>
         </main>
     </div>
-<script src="../js/User_header.js"></script>
+
+    <script src="../js/dashboard.js"></script>
 </body>
 
 </html>
