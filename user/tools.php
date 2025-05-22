@@ -228,6 +228,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 16px;
             color: gray;
         }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--accent-color);
+            color: var(--primary-color);
+        }
     </style>
 </head>
 
@@ -235,42 +241,72 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="dashboard-container">
         <nav class="sidebar">
             <div class="sidebar-header">
-                <a href="index.html" class="logo">E<span>well</span></a>
+                <h2>EWell</h2>
             </div>
             <ul class="nav-links">
-                <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="#"><i class="fas fa-chart-line"></i> Progress</a></li>
-                <li><a href="#"><i class="fas fa-utensils"></i> Nutrition</a></li>
-                <li><a href="#"><i class="fas fa-dumbbell"></i> Workouts</a></li>
-                <li class="active"><a href="tools.php"><i class="fas fa-clock"></i> Tools</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li>
+                    <a href="dashboard.php">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="relaxation.php">
+                        <i class="fas fa-spa"></i>
+                        <span>Relaxation Library</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="breathing.php">
+                        <i class="fas fa-wind"></i>
+                        <span>Breathing</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="journal.php">
+                        <i class="fas fa-book"></i>
+                        <span>Journal</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="soundscapes.php">
+                        <i class="fas fa-music"></i>
+                        <span>Soundscapes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="health_quiz.php">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Health Quiz</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="tools.php" class="active">
+                        <i class="fas fa-tools"></i>
+                        <span>Tools</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="settings.php">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
             </ul>
         </nav>
 
         <main class="main-content">
-            <div class="top-bar">
-                <div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search..."></div>
-                <div class="user-menu">
-                    <i class="fas fa-bell"></i>
-                    <div class="settings-wrapper">
-                        <i class="fas fa-cog settings-icon"></i>
-                        <div class="settings-dropdown">
-                            <div class="dropdown-header">
-                                <img src="../main/image/pic/avatar.jpg" alt="User Avatar" class="avatar">
-                                <div class="user-info">
-                                    <span class="user-name">John Doe</span>
-                                    <span class="user-email">john.doe@example.com</span>
-                                </div>
-                            </div>
-                            <div class="dropdown-divider"></div>
-                            <ul class="dropdown-menu">
-                                <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
-                                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                            </ul>
-                        </div>
-                    </div>
+            <header class="content-header">
+                <h1>Welcome to EWell</h1>
+                <div class="user-info">
+                    <span class="user-name"><?php echo $_SESSION['user_name'] ?? 'User'; ?></span>
+                    <a href="logout.php" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
                 </div>
-            </div>
+            </header>
 
             <!-- Tool Sections -->
             <div class="dashboard-content">
@@ -359,22 +395,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
 
                     <!-- hydration modal -->
-                     <div id="hydrationModal" class="modal">
+                    <div id="hydrationModal" class="modal">
                         <div class="modal-content">
                             <span class="close" id="closeHydrationModal">&times;</span>
                             <h3>Hydration Tracker</h3>
                             <form method="POST">
-                        <input type="number" step="0.1" name="water_intake" placeholder="Water intake (L)" required>
-                        <button type="submit">Log Water</button>
-                    </form>
+                                <input type="number" step="0.1" name="water_intake" placeholder="Water intake (L)"
+                                    required>
+                                <button type="submit">Log Water</button>
+                            </form>
 
-                            <?php if (isset($bmi)): ?>
+                            <?php if (isset($hydration)): ?>
                                 <div class="result-box">
-                                    <p>Your BMI is: <strong><?= $bmi ?></strong></p>
+                                    <p><?= htmlspecialchars($hydration) ?></p>
                                 </div>
                             <?php endif; ?>
                         </div>
                     </div>
+
 
                 </div>
             </div>
@@ -440,6 +478,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php endif; ?>
     </script>
 
+    <!-- hydration script -->
+    <script>
+        const openHydrationModal = document.getElementById("openHydrationModal");
+        const hydrationModal = document.getElementById("hydrationModal");
+        const closeHydrationModal = document.getElementById("closeHydrationModal");
+
+        if (openHydrationModal) {
+            openHydrationModal.onclick = () => {
+                hydrationModal.style.display = "block";
+            };
+        }
+
+        closeHydrationModal.onclick = () => {
+            hydrationModal.style.display = "none";
+        };
+
+        window.onclick = (event) => {
+            if (event.target === hydrationModal) {
+                hydrationModal.style.display = "none";
+            }
+        };
+    </script>
+
+    <script>
+        <?php if (isset($hydration)): ?>
+            window.onload = () => {
+                document.getElementById("hydrationModal").style.display = "block";
+            };
+        <?php endif; ?>
+    </script>
 
 </body>
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="../css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-content">
@@ -20,14 +22,15 @@
                     <label for="email">Email</label>
                     <div class="input-group">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="off">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="input-group">
                         <i class="fas fa-lock"></i>
-                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                        <input type="password" id="password" name="password" placeholder="Enter your password"
+                            autocomplete="off">
                         <i class="fas fa-eye toggle-password"></i>
                     </div>
                 </div>
@@ -38,7 +41,9 @@
                     </div>
                     <a href="#" class="forgot-password">Forgot Password?</a>
                 </div>
-                <button type="submit" class="login-btn" href="dashboard.html">Sign In</button>
+                <button type="button" class="login-btn" onclick="window.location.href='../user/dashboard.php'">Sign
+                    In</button>
+
                 <!-- <div class="divider">
                     <span>or continue with</span>
                 </div>
@@ -66,4 +71,5 @@
     </div>
     <script src="../js/login.js"></script>
 </body>
+
 </html>
