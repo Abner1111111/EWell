@@ -49,8 +49,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="fa-solid fa-star"></i>
+                    <a href="account_setting.php">
+                        <i class="fa-solid fa-gear"></i>
                         <span>Account Settings</span>
                     </a>
                 </li>
