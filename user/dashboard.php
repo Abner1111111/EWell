@@ -8,14 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/User_dashboard.css">
-     <link rel="stylesheet" href="../css/User_header.css">
+    <link rel="stylesheet" href="../css/User_header.css">
 </head>
 
 <body>
     <div class="dashboard-container">
 
         <!-- Header Navigation -->
-        <?php include 'includes/header.php'?>
+        <?php include 'includes/header.php' ?>
 
         <!-- Main Content -->
         <main class="main-content">
@@ -148,7 +148,7 @@
             </section>
         </main>
     </div>
-<script src="../js/User_header.js"></script>
+    <script src="../js/User_header.js"></script>
 </body>
 
 </html>
