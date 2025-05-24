@@ -5,74 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EWell - Journal</title>
     <link rel="stylesheet" href="../css/journal.css">
+    <link rel="stylesheet" href="../css/header.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="journal-container">
         <!-- Sidebar Navigation -->
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <h2>EWell</h2>
-            </div>
-            <ul class="nav-links">
-                <li>
-                    <a href="dashboard.php">
-                        <i class="fas fa-home"></i>
-                        <span>Home</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="relaxation.php">
-                        <i class="fas fa-spa"></i>
-                        <span>Relaxation Library</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="breathing.php">
-                        <i class="fas fa-wind"></i>
-                        <span>Breathing</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="journal.php" class="active">
-                        <i class="fas fa-book"></i>
-                        <span>Journal</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="soundscapes.php">
-                        <i class="fas fa-music"></i>
-                        <span>Soundscapes</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="health_quiz.php">
-                        <i class="fas fa-question-circle"></i>
-                        <span>Health Quiz</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="settings.php">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+      <?php include('includes/header.php'); ?>  
 
         <!-- Main Content -->
         <main class="main-content">
-            <header class="content-header">
-                <h1>My Journal</h1>
-                <div class="user-info">
-                    <span class="user-name"><?php echo $_SESSION['user_name'] ?? 'User'; ?></span>
-                    <a href="logout.php" class="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Logout
-                    </a>
-                </div>
-            </header>
+       
 
             <div class="journal-grid">
                 <!-- New Entry Section -->

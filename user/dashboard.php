@@ -5,23 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EWell - Dashboard</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/User_dashboard.css">
-     <link rel="stylesheet" href="../css/User_header.css">
 </head>
 
 <body>
     <div class="dashboard-container">
-
-        <!-- Header Navigation -->
-        <?php include 'includes/header.php'?>
+        <?php include('includes/header.php'); ?>
 
         <!-- Main Content -->
         <main class="main-content">
-            <header class="content-header">
-                <h1>Welcome to EWell</h1>
-            </header>
+            <h1>Welcome to EWell</h1>
 
             <!-- Wellness Overview -->
             <section class="wellness-overview">
@@ -148,7 +145,8 @@
             </section>
         </main>
     </div>
-<script src="../js/User_header.js"></script>
+
+    <script src="../js/dashboard.js"></script>
 </body>
 
 </html>
