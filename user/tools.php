@@ -51,20 +51,202 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="stylesheet" href="../css/tools.css">
-    <!-- Fonts and Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/User_dashboard.css">
+    <link rel="stylesheet" href="../css/User_header.css">
+    <style>
+    .dashboard-content {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .dashboard-content h2 {
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    .tools-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .tool-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        /* or center if it's just icon + button */
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        width: 200px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .tool-icon {
+        font-size: 2.5rem;
+        color: #8CB369;
+        margin-bottom: 15px;
+    }
+
+    .tool-card button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        background-color: #8CB369;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .tool-card button:hover {
+        background-color: #A0C878;
+    }
+
+
+    .tool-card button i {
+        font-size: 1.1rem;
+    }
+
+    .result-box {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #8CB369;
+    }
+
+    .result-box strong {
+        color: #2c3e50;
+        font-size: 1.1rem;
+    }
+
+    .tool-icon {
+        width: 40px;
+        height: 40px;
+        background: #f0f4e8;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .tool-icon i {
+        color: #8CB369;
+        font-size: 1.2rem;
+        align-items: center;
+    }
+
+    .coming-soon {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        color: #6c757d;
+    }
+
+    .coming-soon i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        color: #8CB369;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        padding-top: 60px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: auto;
+        padding: 20px;
+        border-radius: 8px;
+        position: relative;
+        max-width: 30%;
+        width: fit-content;
+        height: auto;
+    }
+
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: black;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        padding: 12px 15px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+        transition: 0.3s ease;
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px 15px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+        transition: 0.3s ease;
+        font-size: 16px;
+        background-color: #8CB369;
+        color: white;
+    }
+
+    select {
+        width: 100%;
+        padding: 12px 15px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+        transition: 0.3s ease;
+        font-size: 16px;
+        color: gray;
+    }
+    </style>
 </head>
 
 <body>
     <div class="dashboard-container">
-        <?php include 'includes/header.php'; ?>
 
-        <!-- Main Content -->
+        <!-- Header Navigation -->
+        <?php include 'includes/header.php' ?>
+
         <main class="main-content">
-            <div class="tools-container">
-                <h2 class="section-title">Wellness Tools</h2>
+
+            <!-- Tool Sections -->
+            <div class="dashboard-content">
+                <h2><i class="fas fa-tools"></i> Health & Wellness Tools</h2>
+
                 <div class="tools-grid">
                     <!-- BMI Calculator -->
                     <div class="tool-card">
@@ -74,22 +256,73 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <input type="number" id="weight" placeholder="Weight (kg)" min="0" step="0.1">
                                 <input type="number" id="height" placeholder="Height (cm)" min="0" step="0.1">
                         </div>
-                            <button class="timer-btn" onclick="calculateBMI()">Calculate BMI</button>
-                            <div class="calculator-result" id="bmi-result"></div>
+                        <button id="openBMIModal">BMI Calculator</button>
+                    </div>
+
+                    <!-- BMI Modal -->
+                    <div id="bmiModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" id="closeBMIModal">&times;</span>
+                            <h3>BMI Calculator</h3>
+                            <form method="POST">
+                                <input type="number" name="weight" placeholder="Weight (kg)" required
+                                    value="<?= isset($_POST['weight']) ? htmlspecialchars($_POST['weight']) : '' ?>">
+                                <input type="number" name="height" placeholder="Height (cm)" required
+                                    value="<?= isset($_POST['height']) ? htmlspecialchars($_POST['height']) : '' ?>">
+
+                                <button type="submit" name="calculate_bmi">
+                                    <i class="fas fa-calculator"></i> Calculate BMI
+                                </button>
+                            </form>
+
+                            <?php if (isset($bmi)): ?>
+                            <div class="result-box">
+                                <p>Your BMI is: <strong><?= $bmi ?></strong></p>
+                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <!-- Meditation Timer -->
                     <div class="tool-card">
-                        <h3><i class="fas fa-clock"></i> Meditation Timer</h3>
-                        <div class="timer-container">
-                            <div class="timer-display" id="timer">00:00</div>
-                            <div class="timer-controls">
-                                <button class="timer-btn" onclick="startTimer(5)">5 min</button>
-                                <button class="timer-btn" onclick="startTimer(10)">10 min</button>
-                                <button class="timer-btn" onclick="startTimer(15)">15 min</button>
-                                <button class="timer-btn" onclick="stopTimer()">Stop</button>
-                                </div>
+                        <div class="tool-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <button id="openCalorieModal">Calorie Counter</button>
+                    </div>
+
+                    <!-- calorie modal -->
+                    <div id="calorieModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" id="closeCalorieModal">&times;</span>
+                            <h3>Calorie Counter</h3>
+                            <form method="POST">
+                                <input type="number" name="age" placeholder="Age" required>
+                                <select name="gender" required>
+                                    <option selected disabled value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                                <input type="number" name="weight" placeholder="Weight (kg)" required>
+                                <input type="number" name="height" placeholder="Height (cm)" required>
+                                <select name="activity" required>
+                                    <option selected disabled value="">Select Activity Level</option>
+                                    <option value="sedentary">Sedentary</option>
+                                    <option value="light">Light Activity</option>
+                                    <option value="moderate">Moderate Activity</option>
+                                    <option value="active">Very Active</option>
+                                    <option value="very_active">Extra Active</option>
+                                </select>
+                                <button type="submit" name="calculate_calories">
+                                    <i class="fas fa-calculator"></i> Estimate Calories
+                                </button>
+                            </form>
+                            <?php if ($calories !== null): ?>
+                            <div class="result-box">
+                                <p>Your daily caloric need is: <strong><?= $calories ?> kcal</strong></p>
+                            </div>
+                            <?php endif; ?>
+
                         </div>
                     </div>
 
@@ -104,9 +337,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <button class="note-btn" onclick="editNote(this)"><i class="fas fa-edit"></i></button>
                                         <button class="note-btn" onclick="deleteNote(this)"><i class="fas fa-trash"></i></button>
                         </div>
-                                </li>
-                            </ul>
-                            <button class="add-note-btn" onclick="addNote()">Add Note</button>
+                        <button id="openCalorieModal">Hydration Tracker</button>
+                    </div>
+
+                    <!-- hydration modal -->
+                    <div id="hydrationModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" id="closeHydrationModal">&times;</span>
+                            <h3>Hydration Tracker</h3>
+                            <form method="POST">
+                                <input type="number" step="0.1" name="water_intake" placeholder="Water intake (L)"
+                                    required>
+                                <button type="submit">Log Water</button>
+                            </form>
+
+                            <?php if (isset($hydration)): ?>
+                            <div class="result-box">
+                                <p><?= htmlspecialchars($hydration) ?></p>
+                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -115,131 +364,96 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <script>
-        // BMI Calculator
-        function calculateBMI() {
-            const weight = parseFloat(document.getElementById('weight').value);
-            const height = parseFloat(document.getElementById('height').value) / 100; // Convert cm to m
-            const result = document.getElementById('bmi-result');
-            
-            if (weight && height && weight > 0 && height > 0) {
-                const bmi = weight / (height * height);
-                let category = '';
-                
-                if (bmi < 18.5) category = 'Underweight';
-                else if (bmi < 25) category = 'Normal weight';
-                else if (bmi < 30) category = 'Overweight';
-                else category = 'Obese';
-                
-                result.innerHTML = `
-                    <p>Your BMI: <strong>${bmi.toFixed(1)}</strong></p>
-                    <p>Category: <strong>${category}</strong></p>
-                `;
-            } else {
-                result.textContent = 'Please enter valid weight and height values';
-            }
+    const openBMIModal = document.getElementById("openBMIModal");
+    const bmiModal = document.getElementById("bmiModal");
+    const closeBMIModal = document.getElementById("closeBMIModal");
+
+    openBMIModal.onclick = () => {
+        bmiModal.style.display = "block";
+    };
+
+    closeBMIModal.onclick = () => {
+        bmiModal.style.display = "none";
+    };
+
+    window.onclick = (event) => {
+        if (event.target === bmiModal) {
+            bmiModal.style.display = "none";
         }
-
-        // Timer
-        let timerInterval;
-        let timeLeft;
-
-        function startTimer(minutes) {
-            clearInterval(timerInterval);
-            timeLeft = minutes * 60;
-            updateTimerDisplay();
-            
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay();
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    playTimerSound();
-                    alert('Time is up!');
-                }
-            }, 1000);
-        }
-
-        function stopTimer() {
-            clearInterval(timerInterval);
-            timeLeft = 0;
-            updateTimerDisplay();
-        }
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            document.getElementById('timer').textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        function playTimerSound() {
-            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
-            audio.play();
-        }
-
-        // Notes
-        function addNote() {
-            const note = prompt('Enter your note:');
-            if (note && note.trim()) {
-                const notesList = document.getElementById('notes-list');
-                const noteItem = document.createElement('li');
-                noteItem.className = 'note-item';
-                noteItem.innerHTML = `
-                    <span>${note.trim()}</span>
-                    <div class="note-actions">
-                        <button class="note-btn" onclick="editNote(this)"><i class="fas fa-edit"></i></button>
-                        <button class="note-btn" onclick="deleteNote(this)"><i class="fas fa-trash"></i></button>
-                    </div>
-                `;
-                notesList.appendChild(noteItem);
-                saveNotes();
-            }
-        }
-
-        function editNote(button) {
-            const noteItem = button.closest('.note-item');
-            const noteText = noteItem.querySelector('span').textContent;
-            const newNote = prompt('Edit your note:', noteText);
-            
-            if (newNote && newNote.trim()) {
-                noteItem.querySelector('span').textContent = newNote.trim();
-                saveNotes();
-            }
-        }
-
-        function deleteNote(button) {
-            if (confirm('Are you sure you want to delete this note?')) {
-                button.closest('.note-item').remove();
-                saveNotes();
-            }
-        }
-
-        function saveNotes() {
-            const notes = Array.from(document.querySelectorAll('.note-item span')).map(span => span.textContent);
-            localStorage.setItem('wellnessNotes', JSON.stringify(notes));
-        }
-
-        function loadNotes() {
-            const savedNotes = localStorage.getItem('wellnessNotes');
-            if (savedNotes) {
-                const notes = JSON.parse(savedNotes);
-                const notesList = document.getElementById('notes-list');
-                notesList.innerHTML = notes.map(note => `
-                    <li class="note-item">
-                        <span>${note}</span>
-                        <div class="note-actions">
-                            <button class="note-btn" onclick="editNote(this)"><i class="fas fa-edit"></i></button>
-                            <button class="note-btn" onclick="deleteNote(this)"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </li>
-                `).join('');
-            }
-        }
-
-        // Load saved notes when page loads
-        document.addEventListener('DOMContentLoaded', loadNotes);
+    };
     </script>
+    <script>
+    // result
+    <?php if ($bmi !== null): ?>
+    window.onload = () => {
+        document.getElementById("bmiModal").style.display = "block";
+    };
+    <?php endif; ?>
+    </script>
+
+    <!-- calorie counter -->
+    <script>
+    const openCalorieModal = document.getElementById("openCalorieModal");
+    const calorieModal = document.getElementById("calorieModal");
+    const closeCalorieModal = document.getElementById("closeCalorieModal");
+
+    openCalorieModal.onclick = () => {
+        calorieModal.style.display = "block";
+    };
+
+    closeCalorieModal.onclick = () => {
+        calorieModal.style.display = "none";
+    };
+
+    window.onclick = (event) => {
+        if (event.target === calorieModal) {
+            calorieModal.style.display = "none";
+        }
+    };
+    </script>
+    <script>
+    <?php if ($calories !== null): ?>
+    window.onload = () => {
+        document.getElementById("calorieModal").style.display = "block";
+    };
+    <?php endif; ?>
+    </script>
+
+    <!-- hydration script -->
+    <script>
+    const openHydrationModal = document.getElementById("openHydrationModal");
+    const hydrationModal = document.getElementById("hydrationModal");
+    const closeHydrationModal = document.getElementById("closeHydrationModal");
+
+    if (openHydrationModal) {
+        openHydrationModal.onclick = () => {
+            hydrationModal.style.display = "block";
+        };
+    }
+
+    closeHydrationModal.onclick = () => {
+        hydrationModal.style.display = "none";
+    };
+
+    window.onclick = (event) => {
+        if (event.target === hydrationModal) {
+            hydrationModal.style.display = "none";
+        }
+    };
+    </script>
+
+    <script>
+    <?php if (isset($hydration)): ?>
+    window.onload = () => {
+        document.getElementById("hydrationModal").style.display = "block";
+    };
+    <?php endif; ?>
+    </script>
+
+
+
+    <script src="../js/User_header.js"></script>
+    <script src="../js/relaxation.js"></script>
 </body>
 
 </html>
