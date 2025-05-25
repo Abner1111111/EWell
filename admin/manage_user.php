@@ -2,8 +2,7 @@
   // Include required files
   include '../db_connection/database.php';
 
-  // Use the $connection variable from database.php
-  $conn = $connection;
+$connection;
 
   // Check if database connection exists
   if (!isset($conn) || $conn === null) {
@@ -114,6 +113,7 @@
     </style>
 </head>
 <body>
+    <?php include 'include/sidebar.php'; ?>
     <div class="container">
         <h2 class="mb-4">Manage Users</h2>
         

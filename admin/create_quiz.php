@@ -1,91 +1,26 @@
 <?php
+
 include '../db_connection/database.php';
+include '../back_end/quiz_operations.php';
 
-// Use the $connection variable from database.php
-$conn = $connection;
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../login.php');
+    exit;
 }
 
-// Handle form submissions
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['action'])) {
-        switch ($_POST['action']) {
-            case 'add_quiz':
-                // Add new quiz
-                $title = $conn->real_escape_string($_POST['title']);
-                $description = $conn->real_escape_string($_POST['description']);
-                $sql = "INSERT INTO quizzes (title, description, created_at) VALUES ('$title', '$description', NOW())";
-                if ($conn->query($sql)) {
-                    echo "<script>alert('Quiz added successfully!');</script>";
-                }
-                break;
+// Initialize QuizOperations
+$quizOps = new QuizOperations($conn);
 
-            case 'add_question':
-                // Add new question
-                $quiz_id = $_POST['quiz_id'];
-                $question_text = $conn->real_escape_string($_POST['question_text']);
-                $sql = "INSERT INTO questions (quiz_id, question_text) VALUES ($quiz_id, '$question_text')";
-                if ($conn->query($sql)) {
-                    $question_id = $conn->insert_id;
-                    
-                    // Add choices
-                    $choices = $_POST['choices'];
-                    $correct_choice = $_POST['correct_choice'];
-                    
-                    foreach ($choices as $index => $choice) {
-                        $choice_text = $conn->real_escape_string($choice);
-                        $is_correct = ($index == $correct_choice) ? 1 : 0;
-                        $sql = "INSERT INTO choices (question_id, choice_text, is_correct) 
-                                VALUES ($question_id, '$choice_text', $is_correct)";
-                        $conn->query($sql);
-                    }
-                    echo "<script>alert('Question added successfully!');</script>";
-                }
-                break;
+// Get admin name
+$admin_name = $quizOps->getAdminName($_SESSION['user_id']);
 
-            case 'update_question':
-                // Update existing question
-                $question_id = $_POST['question_id'];
-                $question_text = $conn->real_escape_string($_POST['question_text']);
-                $sql = "UPDATE questions SET question_text = '$question_text' WHERE id = $question_id";
-                if ($conn->query($sql)) {
-                    // Delete existing choices
-                    $sql = "DELETE FROM choices WHERE question_id = $question_id";
-                    $conn->query($sql);
-                    
-                    // Add new choices
-                    $choices = $_POST['choices'];
-                    $correct_choice = $_POST['correct_choice'];
-                    
-                    foreach ($choices as $index => $choice) {
-                        $choice_text = $conn->real_escape_string($choice);
-                        $is_correct = ($index == $correct_choice) ? 1 : 0;
-                        $sql = "INSERT INTO choices (question_id, choice_text, is_correct) 
-                                VALUES ($question_id, '$choice_text', $is_correct)";
-                        $conn->query($sql);
-                    }
-                    echo "<script>alert('Question updated successfully!');</script>";
-                }
-                break;
-
-            case 'delete_question':
-                // Delete question and its choices
-                $question_id = $_POST['question_id'];
-                $sql = "DELETE FROM choices WHERE question_id = $question_id";
-                $conn->query($sql);
-                $sql = "DELETE FROM questions WHERE id = $question_id";
-                if ($conn->query($sql)) {
-                    echo "<script>alert('Question deleted successfully!');</script>";
-                }
-                break;
-        }
-    }
+// Get all quizzes
+$quizzes_result = $quizOps->getAllQuizzes();
+if (!$quizzes_result['success']) {
+    die("Error: " . $quizzes_result['message']);
 }
-
-// Fetch existing quizzes
-$quizzes = $conn->query("SELECT * FROM quizzes ORDER BY created_at DESC");
+$quizzes = $quizzes_result['quizzes'];
 ?>
 
 <!DOCTYPE html>
@@ -93,150 +28,268 @@ $quizzes = $conn->query("SELECT * FROM quizzes ORDER BY created_at DESC");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .choice-container {
-            margin-bottom: 10px;
-        }
-    </style>
+    <title>Create Quiz - EWell Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/admin_sidebar.css">
+    <link rel="stylesheet" href="../css/admin_create_quiz.css">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Quiz Management</h2>
-        
-        <!-- Add New Quiz Form -->
-        <div class="card mb-4">
-            <div class="card-header">
-                <h4>Add New Quiz</h4>
-            </div>
-            <div class="card-body">
-                <form method="POST" id="addQuizForm">
-                    <input type="hidden" name="action" value="add_quiz">
-                    <div class="mb-3">
-                        <label class="form-label">Quiz Title:</label>
-                        <input type="text" name="title" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Description:</label>
-                        <textarea name="description" class="form-control" rows="3" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create Quiz</button>
-                </form>
+<div class="dashboard-container">
+    <?php include 'include/sidebar.php'; ?>
+
+    <main class="main-content">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">
+                <i class="fas fa-heartbeat me-2"></i>EWell Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.php">
+                            <i class="fas fa-external-link-alt me-1"></i>View Site
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../logout.php">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
+    </nav>
 
-        <!-- Add New Question Form -->
-        <div class="card mb-4">
-            <div class="card-header">
-                <h4>Add New Question</h4>
-            </div>
-            <div class="card-body">
-                <form method="POST" id="addQuestionForm">
-                    <input type="hidden" name="action" value="add_question">
-                    <div class="mb-3">
-                        <label class="form-label">Select Quiz:</label>
-                        <select name="quiz_id" class="form-control" required>
-                            <?php while ($quiz = $quizzes->fetch_assoc()): ?>
-                                <option value="<?php echo $quiz['id']; ?>"><?php echo htmlspecialchars($quiz['title']); ?></option>
-                            <?php endwhile; ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Question:</label>
-                        <input type="text" name="question_text" class="form-control" required>
-                    </div>
-                    <div id="choicesContainer">
-                        <div class="choice-container">
-                            <input type="text" name="choices[]" class="form-control" placeholder="Choice 1" required>
-                            <input type="radio" name="correct_choice" value="0" required> Correct Answer
-                        </div>
-                        <div class="choice-container">
-                            <input type="text" name="choices[]" class="form-control" placeholder="Choice 2" required>
-                            <input type="radio" name="correct_choice" value="1"> Correct Answer
-                        </div>
-                        <div class="choice-container">
-                            <input type="text" name="choices[]" class="form-control" placeholder="Choice 3" required>
-                            <input type="radio" name="correct_choice" value="2"> Correct Answer
-                        </div>
-                        <div class="choice-container">
-                            <input type="text" name="choices[]" class="form-control" placeholder="Choice 4" required>
-                            <input type="radio" name="correct_choice" value="3"> Correct Answer
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-secondary mb-3" onclick="addChoiceField()">Add Another Choice</button>
-                    <button type="submit" class="btn btn-primary">Add Question</button>
-                </form>
-            </div>
-        </div>
+  
 
-        <!-- Existing Quizzes and Questions -->
-        <?php
-        $quizzes->data_seek(0); // Reset quiz pointer
-        while ($quiz = $quizzes->fetch_assoc()):
-        ?>
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4><?php echo htmlspecialchars($quiz['title']); ?></h4>
-                    <p class="mb-0"><?php echo htmlspecialchars($quiz['description']); ?></p>
+    <!-- Main Content -->
+    <div class="main-content">
+    <section class="wellness-overview">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <!-- Create New Quiz -->
+                <div class="col-md-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-plus-circle me-2"></i>Create New Quiz
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="" name="add_quiz">
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">Quiz Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" name="add_quiz" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Create Quiz
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Add Questions -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-question-circle me-2"></i>Add Questions
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="" name="add_question">
+                                <div class="mb-3">
+                                    <label for="quiz_id" class="form-label">Select Quiz</label>
+                                    <select class="form-control" id="quiz_id" name="quiz_id" required>
+                                        <?php while ($quiz = $quizzes->fetch_assoc()): ?>
+                                            <option value="<?php echo $quiz['quiz_id']; ?>"><?php echo htmlspecialchars($quiz['title']); ?></option>
+                                        <?php endwhile; ?>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="question" class="form-label">Question</label>
+                                    <input type="text" class="form-control" id="question" name="question" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Answers</label>
+                                    <?php for ($i = 0; $i < 4; $i++): ?>
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" name="answers[]" required>
+                                            <div class="input-group-text">
+                                                <input type="radio" name="correct_answer" value="<?php echo $i; ?>" required>
+                                            </div>
+                                        </div>
+                                    <?php endfor; ?>
+                                </div>
+                                <button type="submit" name="add_question" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Add Question
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <?php
-                    $questions = $conn->query("SELECT * FROM questions WHERE quiz_id = {$quiz['id']} ORDER BY id DESC");
-                    while ($question = $questions->fetch_assoc()):
-                    ?>
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5>Question: <?php echo htmlspecialchars($question['question_text']); ?></h5>
-                                
+
+                <!-- Quiz List -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-list me-2"></i>Existing Quizzes
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="quiz-list">
                                 <?php
-                                $choices = $conn->query("SELECT * FROM choices WHERE question_id = {$question['id']}");
-                                while ($choice = $choices->fetch_assoc()):
+                                $quizzes->data_seek(0);
+                                while ($quiz = $quizzes->fetch_assoc()):
+                                    // Get question count
+                                    $stmt = $conn->prepare("SELECT COUNT(*) as question_count FROM questions WHERE quiz_id = ?");
+                                    $stmt->bind_param("i", $quiz['quiz_id']);
+                                    if (!$stmt->execute()) {
+                                        die("Error counting questions: " . $stmt->error);
+                                    }
+                                    $result = $stmt->get_result();
+                                    $question_count = $result->fetch_assoc()['question_count'];
+
+                                    // Get all questions and answers for this quiz
+                                    $stmt = $conn->prepare("
+                                        SELECT q.id as question_id, q.question, 
+                                               GROUP_CONCAT(a.answer ORDER BY a.id) as answers,
+                                               GROUP_CONCAT(a.is_correct ORDER BY a.id) as correct_answers
+                                        FROM questions q
+                                        LEFT JOIN answers a ON q.id = a.question_id
+                                        WHERE q.quiz_id = ?
+                                        GROUP BY q.id
+                                        ORDER BY q.id
+                                    ");
+                                    $stmt->bind_param("i", $quiz['quiz_id']);
+                                    $stmt->execute();
+                                    $questions_result = $stmt->get_result();
                                 ?>
-                                    <div class="ms-3">
-                                        <?php echo htmlspecialchars($choice['choice_text']); ?>
-                                        <?php if ($choice['is_correct']): ?>
-                                            <span class="badge bg-success">Correct Answer</span>
-                                        <?php endif; ?>
+                                    <div class="quiz-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="mb-0"><?php echo htmlspecialchars($quiz['title']); ?></h6>
+                                            <button class="btn btn-outline-primary btn-sm" type="button" 
+                                                    data-bs-toggle="collapse" 
+                                                    data-bs-target="#quiz-<?php echo $quiz['quiz_id']; ?>">
+                                                <i class="fas fa-eye me-1"></i>View Questions
+                                            </button>
+                                        </div>
+                                        <p class="mb-2 small text-muted"><?php echo htmlspecialchars($quiz['description']); ?></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="badge bg-primary">
+                                                <i class="fas fa-question-circle me-1"></i><?php echo $question_count; ?> Questions
+                                            </span>
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar-alt me-1"></i><?php echo date('M d, Y', strtotime($quiz['created_at'])); ?>
+                                            </small>
+                                        </div>
+                                        
+                                        <!-- Collapsible Questions Section -->
+                                        <div class="collapse mt-3" id="quiz-<?php echo $quiz['quiz_id']; ?>">
+                                            <div class="card card-body">
+                                                <?php while ($q = $questions_result->fetch_assoc()): 
+                                                    $answers = explode(',', $q['answers']);
+                                                    $correct_answers = explode(',', $q['correct_answers']);
+                                                ?>
+                                                    <div class="question-item">
+                                                        <h6 class="mb-2">
+                                                            <i class="fas fa-question-circle me-2"></i><?php echo htmlspecialchars($q['question']); ?>
+                                                        </h6>
+                                                        <div class="answers-list">
+                                                            <?php foreach ($answers as $index => $answer): ?>
+                                                                <div class="answer-item d-flex align-items-center">
+                                                                    <span class="me-2"><?php echo $index + 1; ?>.</span>
+                                                                    <span><?php echo htmlspecialchars($answer); ?></span>
+                                                                    <?php if ($correct_answers[$index] == 1): ?>
+                                                                        <span class="badge bg-success ms-2">
+                                                                            <i class="fas fa-check me-1"></i>Correct
+                                                                        </span>
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                    </div>
+                                                <?php endwhile; ?>
+                                            </div>
+                                        </div>
                                     </div>
                                 <?php endwhile; ?>
-                                
-                                <div class="mt-3">
-                                    <button class="btn btn-sm btn-primary" onclick="editQuestion(<?php echo $question['id']; ?>)">Edit</button>
-                                    <form method="POST" style="display: inline;">
-                                        <input type="hidden" name="action" value="delete_question">
-                                        <input type="hidden" name="question_id" value="<?php echo $question['id']; ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this question?')">Delete</button>
-                                    </form>
-                                </div>
                             </div>
                         </div>
-                    <?php endwhile; ?>
+                    </div>
                 </div>
             </div>
-        <?php endwhile; ?>
+        </div>
     </div>
 
+    </section>
+    </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function addChoiceField() {
-            const container = document.getElementById('choicesContainer');
-            const choiceCount = container.children.length;
-            
-            const newChoice = document.createElement('div');
-            newChoice.className = 'choice-container';
-            newChoice.innerHTML = `
-                <input type="text" name="choices[]" class="form-control" placeholder="Choice ${choiceCount + 1}" required>
-                <input type="radio" name="correct_choice" value="${choiceCount}"> Correct Answer
-            `;
-            
-            container.appendChild(newChoice);
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle quiz creation
+        const quizForm = document.querySelector('form[name="add_quiz"]');
+        if (quizForm) {
+            quizForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                
+                fetch('back_end/quiz_operations.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Quiz created successfully!');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while creating the quiz.');
+                });
+            });
         }
 
-        function editQuestion(questionId) {
-            // Implement edit functionality
-            // You can create a modal or redirect to an edit page
-            alert('Edit functionality to be implemented');
+        // Handle question addition
+        const questionForm = document.querySelector('form[name="add_question"]');
+        if (questionForm) {
+            questionForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                
+                fetch('back_end/quiz_operations.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Question added successfully!');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while adding the question.');
+                });
+            });
         }
+    });
     </script>
 </body>
 </html>

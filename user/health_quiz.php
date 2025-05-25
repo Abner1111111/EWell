@@ -1,3 +1,61 @@
+<?php
+session_start();
+include '../db_connection/database.php';
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+// Fetch the health quiz
+$sql = "SELECT * FROM quizzes WHERE title = 'Health Assessment' LIMIT 1";
+$result = $conn->query($sql);
+$quiz = $result->fetch_assoc();
+
+if (!$quiz) {
+    die("Health quiz not found. Please contact the administrator.");
+}
+
+// Fetch questions for the quiz
+$sql = "SELECT q.*, GROUP_CONCAT(a.answer ORDER BY a.id) as options, 
+        GROUP_CONCAT(a.is_correct ORDER BY a.id) as correct_answers
+        FROM questions q 
+        LEFT JOIN answers a ON q.id = a.question_id 
+        WHERE q.quiz_id = ?
+        GROUP BY q.id
+        ORDER BY q.id";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $quiz['quiz_id']);
+$stmt->execute();
+$questions_result = $stmt->get_result();
+
+$quizQuestions = [];
+while ($row = $questions_result->fetch_assoc()) {
+    $options = explode(',', $row['options']);
+    $correct_answers = explode(',', $row['correct_answers']);
+    
+    // Determine category based on question content
+    $category = 'physical'; // default category
+    $question_lower = strtolower($row['question']);
+    
+    if (strpos($question_lower, 'stress') !== false || 
+        strpos($question_lower, 'anxious') !== false || 
+        strpos($question_lower, 'mindfulness') !== false) {
+        $category = 'mental';
+    } elseif (strpos($question_lower, 'work') !== false || 
+              strpos($question_lower, 'hobby') !== false || 
+              strpos($question_lower, 'vacation') !== false) {
+        $category = 'lifestyle';
+    }
+    
+    $quizQuestions[] = [
+        'question' => $row['question'],
+        'options' => $options,
+        'category' => $category
+    ];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,8 +82,8 @@
                 <section class="quiz-intro" id="quizIntro">
                     <div class="intro-card">
                         <i class="fas fa-clipboard-check"></i>
-                        <h2>Welcome to Your Health Assessment</h2>
-                        <p>Take this comprehensive quiz to evaluate your physical, mental, and lifestyle health. Your answers will help us provide personalized recommendations for your wellness journey.</p>
+                        <h2><?php echo htmlspecialchars($quiz['title']); ?></h2>
+                        <p><?php echo htmlspecialchars($quiz['description']); ?></p>
                         <div class="quiz-info">
                             <div class="info-item">
                                 <i class="fas fa-clock"></i>
@@ -33,7 +91,7 @@
                             </div>
                             <div class="info-item">
                                 <i class="fas fa-list-check"></i>
-                                <span>15 questions</span>
+                                <span><?php echo count($quizQuestions); ?> questions</span>
                             </div>
                             <div class="info-item">
                                 <i class="fas fa-shield-alt"></i>
@@ -53,7 +111,7 @@
                         <div class="progress" id="quizProgress"></div>
                     </div>
                     <div class="question-container">
-                        <div class="question-number">Question <span id="currentQuestion">1</span> of 15</div>
+                        <div class="question-number">Question <span id="currentQuestion">1</span> of <?php echo count($quizQuestions); ?></div>
                         <div class="question" id="questionText"></div>
                         <div class="options" id="questionOptions"></div>
                         <div class="navigation-buttons">
@@ -72,30 +130,24 @@
                 <!-- Quiz Results -->
                 <section class="quiz-results" id="quizResults" style="display: none;">
                     <div class="results-card">
-                        <i class="fas fa-chart-line"></i>
+                        <i class="fas fa-chart-pie"></i>
                         <h2>Your Health Assessment Results</h2>
                         <div class="results-summary">
-                            <div class="score-circle">
-                                <span id="healthScore">0</span>%
+                            <div class="result-category">
+                                <h3>Physical Health</h3>
+                                <div class="score" id="physicalScore">0%</div>
                             </div>
-                            <div class="result-categories">
-                                <div class="category">
-                                    <h4>Physical Health</h4>
-                                    <div class="category-score" id="physicalScore"></div>
-                                </div>
-                                <div class="category">
-                                    <h4>Mental Health</h4>
-                                    <div class="category-score" id="mentalScore"></div>
-                                </div>
-                                <div class="category">
-                                    <h4>Lifestyle</h4>
-                                    <div class="category-score" id="lifestyleScore"></div>
-                                </div>
+                            <div class="result-category">
+                                <h3>Mental Health</h3>
+                                <div class="score" id="mentalScore">0%</div>
+                            </div>
+                            <div class="result-category">
+                                <h3>Lifestyle</h3>
+                                <div class="score" id="lifestyleScore">0%</div>
                             </div>
                         </div>
-                        <div class="recommendations">
-                            <h3>Personalized Recommendations</h3>
-                            <ul id="recommendationsList"></ul>
+                        <div class="recommendations" id="recommendations">
+                            <!-- Recommendations will be dynamically added here -->
                         </div>
                         <div class="action-buttons">
                             <button class="action-btn" onclick="saveResults()">
@@ -118,41 +170,9 @@
     </div>
 
     <script>
-        // Quiz data
-        const quizQuestions = [
-            {
-                question: "How often do you exercise?",
-                options: [
-                    "Never",
-                    "1-2 times per week",
-                    "3-4 times per week",
-                    "5 or more times per week"
-                ],
-                category: "physical"
-            },
-            {
-                question: "How many hours of sleep do you get on average?",
-                options: [
-                    "Less than 6 hours",
-                    "6-7 hours",
-                    "7-8 hours",
-                    "More than 8 hours"
-                ],
-                category: "physical"
-            },
-            {
-                question: "How would you rate your stress levels?",
-                options: [
-                    "Very high",
-                    "Moderate to high",
-                    "Moderate",
-                    "Low"
-                ],
-                category: "mental"
-            },
-            // Add more questions here...
-        ];
-
+        // Quiz data from PHP
+        const quizQuestions = <?php echo json_encode($quizQuestions); ?>;
+        
         let currentQuestionIndex = 0;
         let answers = [];
 
@@ -212,55 +232,138 @@
 
         function updateNavigationButtons() {
             const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            
             prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.textContent = currentQuestionIndex === quizQuestions.length - 1 ? 'Finish' : 'Next';
         }
 
         function showResults() {
             document.getElementById('quizQuestions').style.display = 'none';
             document.getElementById('quizResults').style.display = 'block';
             
-            // Calculate scores
+            // Calculate scores for each category
             const scores = calculateScores();
-            displayScores(scores);
+            
+            // Update score displays
+            document.getElementById('physicalScore').textContent = `${scores.physical}%`;
+            document.getElementById('mentalScore').textContent = `${scores.mental}%`;
+            document.getElementById('lifestyleScore').textContent = `${scores.lifestyle}%`;
+            
+            // Generate recommendations
             generateRecommendations(scores);
         }
 
         function calculateScores() {
-            // Implement scoring logic here
-            return {
-                physical: 75,
-                mental: 80,
-                lifestyle: 85,
-                overall: 80
+            const scores = {
+                physical: 0,
+                mental: 0,
+                lifestyle: 0
             };
-        }
-
-        function displayScores(scores) {
-            document.getElementById('healthScore').textContent = scores.overall;
             
-            // Set category scores
-            document.getElementById('physicalScore').style.setProperty('--score', `${scores.physical}%`);
-            document.getElementById('mentalScore').style.setProperty('--score', `${scores.mental}%`);
-            document.getElementById('lifestyleScore').style.setProperty('--score', `${scores.lifestyle}%`);
+            const categoryCounts = {
+                physical: 0,
+                mental: 0,
+                lifestyle: 0
+            };
+            
+            quizQuestions.forEach((question, index) => {
+                const answer = answers[index];
+                const category = question.category;
+                
+                // Convert answer to score (0-3 to 0-100)
+                const answerScore = (answer / 3) * 100;
+                
+                scores[category] += answerScore;
+                categoryCounts[category]++;
+            });
+            
+            // Calculate averages
+            Object.keys(scores).forEach(category => {
+                scores[category] = Math.round(scores[category] / categoryCounts[category]);
+            });
+            
+            return scores;
         }
 
         function generateRecommendations(scores) {
-            const recommendations = [
-                "Consider increasing your daily physical activity",
-                "Practice mindfulness meditation for stress management",
-                "Aim for 7-8 hours of sleep each night",
-                "Stay hydrated throughout the day"
-            ];
+            const recommendations = document.getElementById('recommendations');
+            recommendations.innerHTML = '';
+            
+            // Physical health recommendations
+            if (scores.physical < 70) {
+                addRecommendation(recommendations, 'Physical Health', [
+                    'Consider increasing your exercise frequency',
+                    'Aim for 7-8 hours of sleep each night',
+                    'Increase your water intake',
+                    'Add more fruits and vegetables to your diet'
+                ]);
+            }
+            
+            // Mental health recommendations
+            if (scores.mental < 70) {
+                addRecommendation(recommendations, 'Mental Health', [
+                    'Practice mindfulness or meditation daily',
+                    'Take regular breaks during work',
+                    'Maintain regular social connections',
+                    'Consider stress management techniques'
+                ]);
+            }
+            
+            // Lifestyle recommendations
+            if (scores.lifestyle < 70) {
+                addRecommendation(recommendations, 'Lifestyle', [
+                    'Work on improving work-life balance',
+                    'Schedule regular time for hobbies',
+                    'Plan regular vacations or time off',
+                    'Set boundaries between work and personal time'
+                ]);
+            }
+        }
 
-            const recommendationsList = document.getElementById('recommendationsList');
-            recommendationsList.innerHTML = recommendations
-                .map(rec => `<li>${rec}</li>`)
-                .join('');
+        function addRecommendation(container, category, items) {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'recommendation-category';
+            
+            const title = document.createElement('h3');
+            title.textContent = category;
+            categoryDiv.appendChild(title);
+            
+            const list = document.createElement('ul');
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                list.appendChild(li);
+            });
+            
+            categoryDiv.appendChild(list);
+            container.appendChild(categoryDiv);
         }
 
         function saveResults() {
-            // Implement save functionality
-            alert('Results saved successfully!');
+            // Send results to server
+            fetch('save_quiz_results.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    answers: answers,
+                    scores: calculateScores()
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Results saved successfully!');
+                } else {
+                    alert('Error saving results. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error saving results. Please try again.');
+            });
         }
 
         function shareResults() {
