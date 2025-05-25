@@ -1,3 +1,43 @@
+<?php
+session_start();
+require_once '../config/database.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $password = $_POST['password'];
+    
+    try {
+        $stmt = $conn->prepare("SELECT id, first_name, last_name, email, password, role FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows === 1) {
+            $user = $result->fetch_assoc();
+            
+            if (password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_name'] = $user['first_name'] . ' ' . $user['last_name'];
+                $_SESSION['user_role'] = $user['role'];
+                
+                // Redirect based on role
+                if ($user['role'] === 'admin') {
+                    header("Location: ../admin/dashboard.php");
+                } else {
+                    header("Location: ../user/dashboard.php");
+                }
+                exit();
+            } else {
+                $error = "Invalid email or password";
+            }
+        } else {
+            $error = "Invalid email or password";
+        }
+    } catch (Exception $e) {
+        $error = "An error occurred. Please try again later.";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,21 +56,25 @@
                 <a href="index.html" class="logo">E<span>well</span></a>
                 <h1>Welcome Back</h1>
                 <p>Sign in to continue to your wellness journey</p>
+                <?php if (isset($error)): ?>
+                    <div class="error-message">
+                        <?php echo htmlspecialchars($error); ?>
+                    </div>
+                <?php endif; ?>
             </div>
-            <form class="login-form">
+            <form class="login-form" method="POST" action="">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <div class="input-group">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="off">
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="input-group">
                         <i class="fas fa-lock"></i>
-                        <input type="password" id="password" name="password" placeholder="Enter your password"
-                            autocomplete="off">
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
                         <i class="fas fa-eye toggle-password"></i>
                     </div>
                 </div>
@@ -41,8 +85,7 @@
                     </div>
                     <a href="#" class="forgot-password">Forgot Password?</a>
                 </div>
-                <button type="button" class="login-btn" onclick="window.location.href='../user/dashboard.php'">Sign
-                    In</button>
+                <button type="submit" class="login-btn">Sign In</button>
 
                 <!-- <div class="divider">
                     <span>or continue with</span>
