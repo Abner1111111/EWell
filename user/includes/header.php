@@ -11,7 +11,7 @@
         position: absolute;
         background-color: white;
         min-width: 200px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         z-index: 1000;
         top: 100%;
@@ -44,8 +44,15 @@
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
 <header class="main-header">
@@ -60,38 +67,37 @@
         <nav class="nav-menu">
             <ul class="nav-links">
                 <li><a href="dashboard.php" <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'class="active"' : ''; ?>>
-                    <i class="fas fa-home"></i> Home
-                </a></li>
-                <li><a href="relaxation.php" <?php echo basename($_SERVER['PHP_SELF']) == 'relaxation.php' ? 'class="active"' : ''; ?>>
-                    <i class="fas fa-spa"></i> Relaxation
-                </a></li>
-             
+                        <i class="fas fa-home"></i> Home
+                    </a></li>
                 <li><a href="journal.php" <?php echo basename($_SERVER['PHP_SELF']) == 'journal.php' ? 'class="active"' : ''; ?>>
-                    <i class="fas fa-book"></i> Journal
-                </a></li>
+                        <i class="fas fa-book"></i> Journal
+                    </a></li>
                 <li><a href="nutrition.php" <?php echo basename($_SERVER['PHP_SELF']) == 'nutrition.php' ? 'class="active"' : ''; ?>>
-                    <i class="fas fa-utensils"></i> Nutrition
-                </a></li>
+                        <i class=" fas fa-utensils"></i> Nutrition
+                    </a></li>
                 <li><a href="health_quiz.php" <?php echo basename($_SERVER['PHP_SELF']) == 'health_quiz.php' ? 'class="active"' : ''; ?>>
-                    <i class="fas fa-question-circle"></i> Health Quiz
-                </a></li>
+                        <i class=" fas fa-question-circle"></i> Health Quiz
+                    </a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle">
                         <i class="fas fa-tools"></i> Tools
                         <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i>
                     </a>
                     <div class="dropdown-content">
-                        <a href="tools.php?tool=calculator">
-                            <i class="fas fa-calculator"></i> Tools
+                        <a href="physical_tools.php">
+                            <i class="fas fa-dumbbell"></i>Physical Tools
                         </a>
-                        <a href="tools.php?tool=tracker">
-                            <i class="fas fa-chart-line"></i>
+                        <a href="mental_tools.php">
+                            <i class="fas fa-brain"></i>Mental Tools
                         </a>
                         <a href="tools.php?tool=planner">
-                            <i class="fas fa-calendar-alt"></i>
+                            <i class="fas fa-smile"></i>Emotional Tools
                         </a>
                         <a href="tools.php?tool=reminder">
-                            <i class="fas fa-bell"></i> 
+                            <i class="fas fa-coins"></i>Financial Tools
+                        </a>
+                        <a href="tools.php?tool=reminder">
+                            <i class="fas fa-users"></i>Social Tools
                         </a>
                     </div>
                 </li>
@@ -102,7 +108,9 @@
         <div class="user-info">
             <div class="user-profile">
                 <i class="fas fa-user-circle"></i>
-                <span class="user-name"><?php echo $_SESSION['user_name'] ?? 'User'; ?></span>
+                <span class="user-name">
+                    <?php echo $_SESSION['user_name'] ?? 'User'; ?>
+                </span>
             </div>
             <a href="../logout.php" class="logout-btn" aria-label="Logout">
                 <i class="fas fa-sign-out-alt"></i>
@@ -117,14 +125,14 @@
     const navMenu = document.querySelector('.nav-menu');
     let isMenuOpen = false;
 
-    mobileMenuBtn.addEventListener('click', function() {
+    mobileMenuBtn.addEventListener('click', function () {
         isMenuOpen = !isMenuOpen;
         navMenu.classList.toggle('active');
-    
+
         this.style.transform = isMenuOpen ? 'rotate(90deg)' : 'rotate(0)';
     });
 
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
         if (!navMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
             navMenu.classList.remove('active');
             mobileMenuBtn.style.transform = 'rotate(0)';
@@ -144,9 +152,9 @@
     const dropdownContent = document.querySelector('.dropdown-content');
 
     if (window.innerWidth <= 768) {
-        dropdownToggle.addEventListener('click', function(e) {
+        dropdownToggle.addEventListener('click', function (e) {
             e.preventDefault();
-            dropdownContent.style.display = 
+            dropdownContent.style.display =
                 dropdownContent.style.display === 'block' ? 'none' : 'block';
         });
     }
