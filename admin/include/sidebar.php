@@ -2,6 +2,7 @@
 // Get current page for active state
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
 <div class="admin-sidebar">
     <div class="sidebar-header">
@@ -23,24 +24,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
         
         <li class="<?php echo $current_page === 'create_quiz.php' ? 'active' : ''; ?>">
             <a href="create_quiz.php">
-                <i class="fas fa-plus-circle"></i>
-                <span>Create Quiz</span>
+            <i class="fas fa-tasks"></i>    
+            <span>Manage Quizzes</span>
             </a>
         </li>
+      
         
-        <li class="<?php echo $current_page === 'manage_quizzes.php' ? 'active' : ''; ?>">
-            <a href="manage_quizzes.php">
-                <i class="fas fa-tasks"></i>
-                <span>Manage Quizzes</span>
-            </a>
-        </li>
-        
-        <li class="<?php echo $current_page === 'setup_health_quiz.php' ? 'active' : ''; ?>">
+        <!-- <li class="<?php echo $current_page === 'setup_health_quiz.php' ? 'active' : ''; ?>">
             <a href="setup_health_quiz.php">
                 <i class="fas fa-heartbeat"></i>
                 <span>Health Quiz Setup</span>
             </a>
-        </li>
+        </li> -->
         
         <li class="menu-section">
             <span>User Management</span>
@@ -80,6 +75,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
         
         <li class="menu-section">
             <span>Settings</span>
+        </li>
+        
+        <li class="<?php echo $current_page === 'logs.php' ? 'active' : ''; ?>">
+            <a href="logs.php">
+            <i class="bi bi-clock"></i>
+                <span>Activity logs</span>
+            </a>
         </li>
         
         <li class="<?php echo $current_page === 'settings.php' ? 'active' : ''; ?>">

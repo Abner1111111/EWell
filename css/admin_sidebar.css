@@ -79,4 +79,8 @@ body {
     .admin-sidebar.show {
         transform: translateX(0);
     }
+
+    .navbar-toggler {
+        display: none !important;
+    }
 }
