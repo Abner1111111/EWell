@@ -78,8 +78,14 @@
                 <li><a href="health_quiz.php" <?php echo basename($_SERVER['PHP_SELF']) == 'health_quiz.php' ? 'class="active"' : ''; ?>>
                         <i class=" fas fa-question-circle"></i> Health Quiz
                     </a></li>
+                <?php
+                $currentPage = basename($_SERVER['PHP_SELF']);
+                $toolPages = ['physical_tools.php', 'mental_tools.php', 'tools.php'];
+
+                $isToolActive = in_array($currentPage, $toolPages);
+                ?>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">
+                    <a href="#" class="dropdown-toggle <?php echo $isToolActive ? 'active' : ''; ?>">
                         <i class="fas fa-tools"></i> Tools
                         <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i>
                     </a>
