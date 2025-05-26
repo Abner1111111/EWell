@@ -4,16 +4,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welness Portal</title>
+    <title>Wellness Portal</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 60px;
+            /* Adjust as needed */
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+
+
+        /* Optional: make sure nav-links don’t overflow on small screens */
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+    </style>
 </head>
 
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="navbar-container">
+            <div class="logo-container">
+                <img src="image/DTI_w12.png" alt="DTI Logo" class="logo-img">
+            </div>
             <a href="index.html" class="logo">E<span>well</span></a>
             <button class="menu-toggle" onclick="toggleMenu()">
                 <i class="fas fa-bars"></i>

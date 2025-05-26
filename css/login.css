@@ -394,4 +394,14 @@ body {
     .input-group .toggle-password {
         padding: 10px;
     }
+}
+
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    text-align: center;
+    font-size: 14px;
 } 
