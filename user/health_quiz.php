@@ -694,12 +694,12 @@ while ($row = $questions_result->fetch_assoc()) {
 
             // Move to next question after delay
             setTimeout(() => {
-                if (currentQuestionIndex < quizQuestions.length - 1) {
-                    currentQuestionIndex++;
-                    showQuestion();
-                } else {
-                    showResults();
-                }
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                showResults();
+            }
             }, 2000);
         }
 
