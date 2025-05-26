@@ -2,17 +2,20 @@
 session_start();
 include '../db_connection/database.php';
 
-// Check if user is logged in and is an admin
 
 
 // Get admin name
+$admin_name = 'Admin'; // Default name
 $admin_id = $_SESSION['user_id'];
 $stmt = $conn->prepare("SELECT first_name, last_name FROM users WHERE id = ?");
 $stmt->bind_param("i", $admin_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $admin = $result->fetch_assoc();
-$admin_name = $admin['first_name'] . ' ' . $admin['last_name'];
+
+if ($admin) {
+    $admin_name = $admin['first_name'] . ' ' . $admin['last_name'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -21,136 +24,14 @@ $admin_name = $admin['first_name'] . ' ' . $admin['last_name'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - EWell</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #4CAF50;
-            --secondary-color: #45a049;
-            --accent-color: #2196F3;
-            --text-color: #333;
-            --light-bg: #f8f9fa;
-            --border-color: #dee2e6;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light-bg);
-            color: var(--text-color);
-        }
-
-        .navbar {
-            background-color: var(--primary-color);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .navbar-brand {
-            color: white !important;
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-
-        .nav-link {
-            color: rgba(255,255,255,0.9) !important;
-            transition: color 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: white !important;
-        }
-
-        .admin-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            margin-bottom: 1.5rem;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-header {
-            background-color: white;
-            border-bottom: 2px solid var(--border-color);
-            border-radius: 15px 15px 0 0 !important;
-            padding: 1.5rem;
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-
-        .btn-outline-primary {
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .feature-icon {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .welcome-message {
-            font-size: 1.2rem;
-            margin-bottom: 0;
-        }
-
-        .admin-name {
-            font-weight: bold;
-            color: white;
-        }
-
-        .logout-btn {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            background-color: rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            background-color: rgba(255,255,255,0.3);
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/admin_sidebar.css">
+    <link rel="stylesheet" href="../css/admin_index.css">
 </head>
 <body>
+    <?php include "include/sidebar.php";?>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">

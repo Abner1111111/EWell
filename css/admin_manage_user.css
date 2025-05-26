@@ -1,0 +1,148 @@
+/* User Management Specific Styles */
+.user-management-container {
+    padding: 20px;
+}
+
+/* User Registration Form Styles */
+.user-form {
+    background: var(--text-light);
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    height: 100%;
+}
+
+.user-form .card-header {
+    background: var(--primary-color);
+    color: var(--text-light);
+    border-radius: 15px 15px 0 0 !important;
+    padding: 1.5rem;
+}
+
+.user-form .form-label {
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.user-form .form-control {
+    border-radius: 10px;
+    border: 1px solid var(--bg-secondary);
+    padding: 0.75rem 1rem;
+    transition: var(--transition);
+}
+
+.user-form .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(140, 179, 105, 0.25);
+}
+
+/* User List Table Styles */
+.user-list {
+    background: var(--text-light);
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
+    height: 100%;
+}
+
+.user-list .card-header {
+    background: var(--primary-color);
+    color: var(--text-light);
+    border-radius: 15px 15px 0 0 !important;
+    padding: 1.5rem;
+}
+
+.user-list .table {
+    margin-bottom: 0;
+}
+
+.user-list .table th {
+    font-weight: 600;
+    color: var(--text-dark);
+    border-bottom: 2px solid var(--bg-secondary);
+}
+
+.user-list .table td {
+    vertical-align: middle;
+    color: var(--text-dark);
+}
+
+.user-list .btn-sm {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    transition: var(--transition);
+}
+
+.user-list .btn-sm:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-edit {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-edit:hover {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+.btn-delete {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.btn-delete:hover {
+    background-color: var(--accent-color);
+    color: var(--text-light);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .user-management-container {
+        padding: 15px;
+    }
+
+    .user-form .card-header,
+    .user-list .card-header {
+        padding: 1rem;
+    }
+
+    .user-list .table {
+        font-size: 0.9rem;
+    }
+
+    .user-list .btn-sm {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .action-buttons {
+        gap: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-management-container {
+        padding: 10px;
+    }
+
+    .user-form .card-header,
+    .user-list .card-header {
+        padding: 0.8rem;
+    }
+
+    .user-list .table {
+        font-size: 0.85rem;
+    }
+
+    .user-list .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+} 

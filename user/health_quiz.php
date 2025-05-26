@@ -4,7 +4,7 @@ include '../db_connection/database.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: ../main/login.php');
     exit;
 }
 
@@ -50,8 +50,11 @@ while ($row = $questions_result->fetch_assoc()) {
     }
     
     $quizQuestions[] = [
+        'id' => $row['id'],
         'question' => $row['question'],
         'options' => $options,
+        'correct_answers' => $correct_answers,
+        'points' => $row['points'],
         'category' => $category
     ];
 }
@@ -70,6 +73,306 @@ while ($row = $questions_result->fetch_assoc()) {
     <!-- Fonts and Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Animation Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        /* Enhanced Quiz Styles */
+        .quiz-content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-intro {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .intro-card {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .intro-card i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: space-around;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .start-quiz-btn {
+            background: white;
+            color: #4CAF50;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .start-quiz-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            background: #f0f0f0;
+            height: 10px;
+            border-radius: 5px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .options {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .option {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: #e8f5e9;
+            border-color: #4CAF50;
+        }
+
+        .option i {
+            color: #4CAF50;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .option.selected i {
+            opacity: 1;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-card {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .results-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .result-category {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .score {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .recommendations {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .recommendation-category {
+            margin-bottom: 1.5rem;
+        }
+
+        .recommendation-category h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .recommendation-category ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendation-category li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .recommendation-category li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #fff;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: white;
+            color: #4CAF50;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .quiz-content {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .intro-card {
+                padding: 2rem 1rem;
+            }
+
+            .question {
+                font-size: 1.2rem;
+            }
+
+            .results-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">
@@ -79,7 +382,7 @@ while ($row = $questions_result->fetch_assoc()) {
         <main class="main-content">
             <div class="quiz-content">
                 <!-- Quiz Introduction -->
-                <section class="quiz-intro" id="quizIntro">
+                <section class="quiz-intro animate__animated animate__fadeIn" id="quizIntro">
                     <div class="intro-card">
                         <i class="fas fa-clipboard-check"></i>
                         <h2><?php echo htmlspecialchars($quiz['title']); ?></h2>
@@ -106,7 +409,7 @@ while ($row = $questions_result->fetch_assoc()) {
                 </section>
 
                 <!-- Quiz Questions -->
-                <section class="quiz-questions" id="quizQuestions" style="display: none;">
+                <section class="quiz-questions animate__animated animate__fadeIn" id="quizQuestions" style="display: none;">
                     <div class="progress-bar">
                         <div class="progress" id="quizProgress"></div>
                     </div>
@@ -128,9 +431,9 @@ while ($row = $questions_result->fetch_assoc()) {
                 </section>
 
                 <!-- Quiz Results -->
-                <section class="quiz-results" id="quizResults" style="display: none;">
+                <section class="quiz-results animate__animated animate__fadeIn" id="quizResults" style="display: none;">
                     <div class="results-card">
-                        <i class="fas fa-chart-pie"></i>
+                        <i class="fas fa-chart-pie fa-3x"></i>
                         <h2>Your Health Assessment Results</h2>
                         <div class="results-summary">
                             <div class="result-category">
@@ -178,7 +481,9 @@ while ($row = $questions_result->fetch_assoc()) {
 
         function startQuiz() {
             document.getElementById('quizIntro').style.display = 'none';
-            document.getElementById('quizQuestions').style.display = 'block';
+            const quizQuestions = document.getElementById('quizQuestions');
+            quizQuestions.style.display = 'block';
+            quizQuestions.classList.add('animate__fadeIn');
             showQuestion();
         }
 
@@ -193,10 +498,19 @@ while ($row = $questions_result->fetch_assoc()) {
             question.options.forEach((option, index) => {
                 const optionElement = document.createElement('div');
                 optionElement.className = 'option';
-                optionElement.textContent = option;
+                optionElement.innerHTML = `
+                    <i class="fas fa-check"></i>
+                    <span>${option}</span>
+                `;
                 optionElement.onclick = () => selectOption(index);
                 optionsContainer.appendChild(optionElement);
             });
+
+            // Pre-select previous answer if exists
+            if (answers[currentQuestionIndex] !== undefined) {
+                const options = document.querySelectorAll('.option');
+                options[answers[currentQuestionIndex]].classList.add('selected');
+            }
 
             updateProgress();
             updateNavigationButtons();
@@ -240,18 +554,38 @@ while ($row = $questions_result->fetch_assoc()) {
 
         function showResults() {
             document.getElementById('quizQuestions').style.display = 'none';
-            document.getElementById('quizResults').style.display = 'block';
+            const results = document.getElementById('quizResults');
+            results.style.display = 'block';
+            results.classList.add('animate__fadeIn');
             
             // Calculate scores for each category
             const scores = calculateScores();
             
-            // Update score displays
-            document.getElementById('physicalScore').textContent = `${scores.physical}%`;
-            document.getElementById('mentalScore').textContent = `${scores.mental}%`;
-            document.getElementById('lifestyleScore').textContent = `${scores.lifestyle}%`;
+            // Animate score updates
+            animateScore('physicalScore', scores.physical);
+            animateScore('mentalScore', scores.mental);
+            animateScore('lifestyleScore', scores.lifestyle);
             
             // Generate recommendations
             generateRecommendations(scores);
+        }
+
+        function animateScore(elementId, finalScore) {
+            const element = document.getElementById(elementId);
+            let currentScore = 0;
+            const duration = 1500; // 1.5 seconds
+            const steps = 60;
+            const increment = finalScore / steps;
+            const stepDuration = duration / steps;
+
+            const interval = setInterval(() => {
+                currentScore += increment;
+                if (currentScore >= finalScore) {
+                    currentScore = finalScore;
+                    clearInterval(interval);
+                }
+                element.textContent = `${Math.round(currentScore)}%`;
+            }, stepDuration);
         }
 
         function calculateScores() {
@@ -271,10 +605,12 @@ while ($row = $questions_result->fetch_assoc()) {
                 const answer = answers[index];
                 const category = question.category;
                 
-                // Convert answer to score (0-3 to 0-100)
-                const answerScore = (answer / 3) * 100;
+                // Calculate score based on correct answer
+                const correctAnswer = question.correct_answers[0];
+                const isCorrect = answer === parseInt(correctAnswer);
+                const questionScore = isCorrect ? 100 : 0;
                 
-                scores[category] += answerScore;
+                scores[category] += questionScore;
                 categoryCounts[category]++;
             });
             
@@ -323,7 +659,7 @@ while ($row = $questions_result->fetch_assoc()) {
 
         function addRecommendation(container, category, items) {
             const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'recommendation-category';
+            categoryDiv.className = 'recommendation-category animate__animated animate__fadeIn';
             
             const title = document.createElement('h3');
             title.textContent = category;
@@ -348,6 +684,7 @@ while ($row = $questions_result->fetch_assoc()) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    quiz_id: <?php echo $quiz['quiz_id']; ?>,
                     answers: answers,
                     scores: calculateScores()
                 })
@@ -355,27 +692,41 @@ while ($row = $questions_result->fetch_assoc()) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Results saved successfully!');
+                    showNotification('Results saved successfully!', 'success');
                 } else {
-                    alert('Error saving results. Please try again.');
+                    showNotification('Error saving results. Please try again.', 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error saving results. Please try again.');
+                showNotification('Error saving results. Please try again.', 'error');
             });
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type} animate__animated animate__fadeIn`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('animate__fadeOut');
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
         }
 
         function shareResults() {
             // Implement share functionality
-            alert('Sharing feature coming soon!');
+            showNotification('Sharing feature coming soon!', 'info');
         }
 
         function retakeQuiz() {
             currentQuestionIndex = 0;
             answers = [];
             document.getElementById('quizResults').style.display = 'none';
-            document.getElementById('quizIntro').style.display = 'flex';
+            const intro = document.getElementById('quizIntro');
+            intro.style.display = 'flex';
+            intro.classList.add('animate__fadeIn');
         }
     </script>
 </body>
