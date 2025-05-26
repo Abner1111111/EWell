@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 26, 2025 at 04:29 AM
+-- Generation Time: May 26, 2025 at 04:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -197,8 +197,8 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
-  `Email` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `role` enum('Admin','User') NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -207,10 +207,12 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `Email`, `password`, `role`, `created_at`) VALUES
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `role`, `created_at`) VALUES
 (1, 'James ', 'Pama', 'James', '$2y$10$BAGrz12tn4vuz50fvHWAReudRc1RV9OsTTBGw.L4zCl', 'Admin', '2025-05-22 03:19:27'),
 (3, 'John Abner', 'Garzon', 'Admin1@gmail.com', '$2y$10$DvJVL1GhO3Ivik73LBwm0eSGLdeg79az34q5E1KyYbh', 'Admin', '2025-05-25 13:00:25'),
-(4, 'Test1', 'Test1', 'Test1@ewell-php.gov', '$2y$10$qjzlrbg0hThzIpuHrq9NNOmHngOzuICS6MJFT5SHjuF', 'Admin', '2025-05-25 13:09:46');
+(4, 'Test1', 'Test1', 'Test1@ewell-php.gov', '$2y$10$qjzlrbg0hThzIpuHrq9NNOmHngOzuICS6MJFT5SHjuF', 'Admin', '2025-05-25 13:09:46'),
+(0, 'Admin', 'User', 'admin@ewell.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Admin', '2025-05-26 02:39:50'),
+(0, 'Test', 'User', 'test@ewell.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'User', '2025-05-26 02:39:50');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
