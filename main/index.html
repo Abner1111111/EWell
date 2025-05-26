@@ -14,14 +14,20 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 20px;
+            padding: 10px 0px;
         }
 
         .logo-wrapper {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
+            /* Reduced space between logo and Ewell */
+            margin-left: 0;
+            /* Ensure no extra margin */
+            padding-left: 0;
+            /* Optional if you had padding */
         }
+
 
         .logo-container {
             display: flex;
@@ -57,8 +63,8 @@
         <div class="navbar-container">
             <div class="logo-container">
                 <img src="image/DTI_w12.png" alt="DTI Logo" class="logo-img">
+                <a href="index.html" class="logo">E<span>well</span></a>
             </div>
-            <a href="index.html" class="logo">E<span>well</span></a>
             <button class="menu-toggle" onclick="toggleMenu()">
                 <i class="fas fa-bars"></i>
             </button>
