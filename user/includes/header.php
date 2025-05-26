@@ -80,7 +80,7 @@
                     </a></li>
                 <?php
                 $currentPage = basename($_SERVER['PHP_SELF']);
-                $toolPages = ['physical_tools.php', 'mental_tools.php', 'tools.php'];
+                $toolPages = ['physical_tools.php', 'mental_tools.php', 'emotional_tools.php', 'financial_tools.php', 'social_tools.php'];
 
                 $isToolActive = in_array($currentPage, $toolPages);
                 ?>
