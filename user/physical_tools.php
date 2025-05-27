@@ -117,117 +117,117 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <script>
-        // BMI Calculator
-        function calculateBMI() {
-            const weight = parseFloat(document.getElementById('weight').value);
-            const height = parseFloat(document.getElementById('height').value) / 100; // Convert cm to m
-            const result = document.getElementById('bmi-result');
+    // BMI Calculator
+    function calculateBMI() {
+        const weight = parseFloat(document.getElementById('weight').value);
+        const height = parseFloat(document.getElementById('height').value) / 100; // Convert cm to m
+        const result = document.getElementById('bmi-result');
 
-            if (weight && height && weight > 0 && height > 0) {
-                const bmi = weight / (height * height);
-                let category = '';
+        if (weight && height && weight > 0 && height > 0) {
+            const bmi = weight / (height * height);
+            let category = '';
 
-                if (bmi < 18.5) category = 'Underweight';
-                else if (bmi < 25) category = 'Normal weight';
-                else if (bmi < 30) category = 'Overweight';
-                else category = 'Obese';
+            if (bmi < 18.5) category = 'Underweight';
+            else if (bmi < 25) category = 'Normal weight';
+            else if (bmi < 30) category = 'Overweight';
+            else category = 'Obese';
 
-                result.innerHTML = `
+            result.innerHTML = `
                     <p>Your BMI: <strong>${bmi.toFixed(1)}</strong></p>
                     <p>Category: <strong>${category}</strong></p>
                 `;
-            } else {
-                result.textContent = 'Please enter valid weight and height values';
+        } else {
+            result.textContent = 'Please enter valid weight and height values';
+        }
+    }
+
+    // Timer
+    let timerInterval;
+    let timeLeft;
+
+    function startTimer(minutes) {
+        clearInterval(timerInterval);
+        timeLeft = minutes * 60;
+        updateTimerDisplay();
+
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                playTimerSound();
+                alert('Time is up!');
             }
-        }
+        }, 1000);
+    }
 
-        // Timer
-        let timerInterval;
-        let timeLeft;
+    function stopTimer() {
+        clearInterval(timerInterval);
+        timeLeft = 0;
+        updateTimerDisplay();
+    }
 
-        function startTimer(minutes) {
-            clearInterval(timerInterval);
-            timeLeft = minutes * 60;
-            updateTimerDisplay();
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        document.getElementById('timer').textContent =
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
 
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay();
+    function playTimerSound() {
+        const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
+        audio.play();
+    }
 
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    playTimerSound();
-                    alert('Time is up!');
-                }
-            }, 1000);
-        }
-
-        function stopTimer() {
-            clearInterval(timerInterval);
-            timeLeft = 0;
-            updateTimerDisplay();
-        }
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            document.getElementById('timer').textContent =
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        function playTimerSound() {
-            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
-            audio.play();
-        }
-
-        // Notes
-        function addNote() {
-            const note = prompt('Enter your note:');
-            if (note && note.trim()) {
-                const notesList = document.getElementById('notes-list');
-                const noteItem = document.createElement('li');
-                noteItem.className = 'note-item';
-                noteItem.innerHTML = `
+    // Notes
+    function addNote() {
+        const note = prompt('Enter your note:');
+        if (note && note.trim()) {
+            const notesList = document.getElementById('notes-list');
+            const noteItem = document.createElement('li');
+            noteItem.className = 'note-item';
+            noteItem.innerHTML = `
                     <span>${note.trim()}</span>
                     <div class="note-actions">
                         <button class="note-btn" onclick="editNote(this)"><i class="fas fa-edit"></i></button>
                         <button class="note-btn" onclick="deleteNote(this)"><i class="fas fa-trash"></i></button>
                     </div>
                 `;
-                notesList.appendChild(noteItem);
-                saveNotes();
-            }
+            notesList.appendChild(noteItem);
+            saveNotes();
         }
+    }
 
-        function editNote(button) {
-            const noteItem = button.closest('.note-item');
-            const noteText = noteItem.querySelector('span').textContent;
-            const newNote = prompt('Edit your note:', noteText);
+    function editNote(button) {
+        const noteItem = button.closest('.note-item');
+        const noteText = noteItem.querySelector('span').textContent;
+        const newNote = prompt('Edit your note:', noteText);
 
-            if (newNote && newNote.trim()) {
-                noteItem.querySelector('span').textContent = newNote.trim();
-                saveNotes();
-            }
+        if (newNote && newNote.trim()) {
+            noteItem.querySelector('span').textContent = newNote.trim();
+            saveNotes();
         }
+    }
 
-        function deleteNote(button) {
-            if (confirm('Are you sure you want to delete this note?')) {
-                button.closest('.note-item').remove();
-                saveNotes();
-            }
+    function deleteNote(button) {
+        if (confirm('Are you sure you want to delete this note?')) {
+            button.closest('.note-item').remove();
+            saveNotes();
         }
+    }
 
-        function saveNotes() {
-            const notes = Array.from(document.querySelectorAll('.note-item span')).map(span => span.textContent);
-            localStorage.setItem('wellnessNotes', JSON.stringify(notes));
-        }
+    function saveNotes() {
+        const notes = Array.from(document.querySelectorAll('.note-item span')).map(span => span.textContent);
+        localStorage.setItem('wellnessNotes', JSON.stringify(notes));
+    }
 
-        function loadNotes() {
-            const savedNotes = localStorage.getItem('wellnessNotes');
-            if (savedNotes) {
-                const notes = JSON.parse(savedNotes);
-                const notesList = document.getElementById('notes-list');
-                notesList.innerHTML = notes.map(note => `
+    function loadNotes() {
+        const savedNotes = localStorage.getItem('wellnessNotes');
+        if (savedNotes) {
+            const notes = JSON.parse(savedNotes);
+            const notesList = document.getElementById('notes-list');
+            notesList.innerHTML = notes.map(note => `
                     <li class="note-item">
                         <span>${note}</span>
                         <div class="note-actions">
@@ -236,11 +236,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     </li>
                 `).join('');
-            }
         }
+    }
 
-        // Load saved notes when page loads
-        document.addEventListener('DOMContentLoaded', loadNotes);
+    // Load saved notes when page loads
+    document.addEventListener('DOMContentLoaded', loadNotes);
     </script>
 </body>
 

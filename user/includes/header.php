@@ -80,7 +80,7 @@
                     </a></li>
                 <?php
                 $currentPage = basename($_SERVER['PHP_SELF']);
-                $toolPages = ['physical_tools.php', 'mental_tools.php', 'tools.php'];
+                $toolPages = ['physical_tools.php', 'mental_tools.php', 'emotional_tools.php', 'financial_tools.php', 'social_tools.php'];
 
                 $isToolActive = in_array($currentPage, $toolPages);
                 ?>
@@ -91,18 +91,18 @@
                     </a>
                     <div class="dropdown-content">
                         <a href="physical_tools.php">
-                            <i class="fas fa-dumbbell"></i>Physical Tools
+                            <i class="fas fa-heartbeat"></i>Physical Tools
                         </a>
                         <a href="mental_tools.php">
                             <i class="fas fa-brain"></i>Mental Tools
                         </a>
-                        <a href="tools.php?tool=planner">
+                        <a href="emotional_tools.php">
                             <i class="fas fa-smile"></i>Emotional Tools
                         </a>
-                        <a href="budgeting.php?tool=reminder">
+                        <a href="financial_tools.php">
                             <i class="fas fa-coins"></i>Financial Tools
                         </a>
-                        <a href="tools.php?tool=reminder">
+                        <a href="social_tools.php">
                             <i class="fas fa-users"></i>Social Tools
                         </a>
                     </div>
