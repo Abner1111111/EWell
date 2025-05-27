@@ -80,7 +80,7 @@
                     </a></li>
                 <?php
                 $currentPage = basename($_SERVER['PHP_SELF']);
-                $toolPages = ['physical_tools.php', 'mental_tools.php', 'emotional_tools.php', 'financial_tools.php', 'social_tools.php'];
+                $toolPages = ['physical_tools.php', 'mental_tools.php', 'emotional_tools.php', 'budgeting.php', 'social_tools.php'];
 
                 $isToolActive = in_array($currentPage, $toolPages);
                 ?>
@@ -99,7 +99,7 @@
                         <a href="emotional_tools.php">
                             <i class="fas fa-smile"></i>Emotional Tools
                         </a>
-                        <a href="financial_tools.php">
+                        <a href="budgeting.php">
                             <i class="fas fa-coins"></i>Financial Tools
                         </a>
                         <a href="social_tools.php">
