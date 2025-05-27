@@ -1,0 +1,15 @@
+{
+    "name": "ewell/financial-planner",
+    "description": "Financial planning system for EWell platform",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "phpoffice/phpspreadsheet": "^1.29",
+        "dompdf/dompdf": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "EWell\\": "src/"
+        }
+    }
+} 

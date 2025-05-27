@@ -478,7 +478,7 @@ while ($row = $questions_result->fetch_assoc()) {
                     <div class="question-container">
                         <div class="timer-container" id="timer">
                             <i class="fas fa-clock"></i>
-                            <span id="timeLeft">30</span>s
+                            <span id="timeLeft">15</span>s
                         </div>
                         <div class="question-number">Question <span id="currentQuestion">1</span> of <?php echo count($quizQuestions); ?></div>
                         <div class="question" id="questionText"></div>
@@ -536,7 +536,7 @@ while ($row = $questions_result->fetch_assoc()) {
         let currentQuestionIndex = 0;
         let answers = [];
         let timer;
-        let timeLeft = 30;
+        let timeLeft = 15;
         let canAnswer = true;
 
         function createConfetti() {
@@ -585,7 +585,7 @@ while ($row = $questions_result->fetch_assoc()) {
 
         function resetTimer() {
             clearInterval(timer);
-            timeLeft = 30;
+            timeLeft = 15;
             updateTimerDisplay();
             startTimer();
         }
@@ -610,9 +610,9 @@ while ($row = $questions_result->fetch_assoc()) {
             
             // Update timer color based on time left
             timerContainer.className = 'timer-container';
-            if (timeLeft <= 10) {
+            if (timeLeft <= 5) {
                 timerContainer.classList.add('danger');
-            } else if (timeLeft <= 20) {
+            } else if (timeLeft <= 10) {
                 timerContainer.classList.add('warning');
             }
         }

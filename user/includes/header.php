@@ -99,7 +99,7 @@
                         <a href="tools.php?tool=planner">
                             <i class="fas fa-smile"></i>Emotional Tools
                         </a>
-                        <a href="tools.php?tool=reminder">
+                        <a href="budgeting.php?tool=reminder">
                             <i class="fas fa-coins"></i>Financial Tools
                         </a>
                         <a href="tools.php?tool=reminder">
