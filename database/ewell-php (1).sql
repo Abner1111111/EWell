@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 26, 2025 at 04:41 AM
+-- Generation Time: May 27, 2025 at 06:28 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -96,6 +96,149 @@ INSERT INTO `answers` (`id`, `question_id`, `answer`, `is_correct`, `created_at`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `budgets`
+--
+
+CREATE TABLE `budgets` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `period` enum('Weekly','Monthly','Yearly') NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `budgets`
+--
+
+INSERT INTO `budgets` (`id`, `user_id`, `category`, `amount`, `period`, `created_at`, `updated_at`) VALUES
+(1, 4, 'transportation', 2000.00, 'Weekly', '2025-05-27 02:25:42', '2025-05-27 02:25:42'),
+(2, 4, 'transportation', 2000.00, 'Weekly', '2025-05-27 02:29:01', '2025-05-27 02:29:01'),
+(3, 4, 'transportation', 2000.00, 'Weekly', '2025-05-27 02:31:26', '2025-05-27 02:31:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `expenses`
+--
+
+CREATE TABLE `expenses` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `date` date NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `expenses`
+--
+
+INSERT INTO `expenses` (`id`, `user_id`, `description`, `amount`, `category`, `date`, `created_at`, `updated_at`) VALUES
+(1, 4, 'test', 10000.00, 'Housing', '2025-05-27', '2025-05-27 01:13:02', '2025-05-27 01:13:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `financial_goals`
+--
+
+CREATE TABLE `financial_goals` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `target_amount` decimal(10,2) NOT NULL,
+  `current_amount` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `deadline` date NOT NULL,
+  `description` text DEFAULT NULL,
+  `status` varchar(122) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `financial_goals`
+--
+
+INSERT INTO `financial_goals` (`id`, `user_id`, `title`, `target_amount`, `current_amount`, `deadline`, `description`, `status`, `created_at`, `updated_at`) VALUES
+(1, 4, 'test', 1000.00, 500.00, '2025-05-27', 'test', 'active', '2025-05-27 00:47:06', '2025-05-27 02:35:16'),
+(2, 4, 'test2', 10000.00, 1000.00, '2025-05-27', 'test', '', '2025-05-27 00:47:46', '2025-05-27 00:47:46'),
+(3, 4, 'test', 1000.00, 0.00, '2025-05-27', NULL, '', '2025-05-27 02:25:10', '2025-05-27 02:25:10');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `financial_transactions`
+--
+
+CREATE TABLE `financial_transactions` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `type` enum('income','expense') NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `date` date NOT NULL,
+  `description` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `financial_transactions`
+--
+
+INSERT INTO `financial_transactions` (`id`, `user_id`, `type`, `amount`, `category`, `date`, `description`, `created_at`) VALUES
+(1, 4, 'expense', 1200.00, 'food', '2025-05-27', NULL, '2025-05-27 02:40:14'),
+(2, 4, 'expense', 1200.00, 'food', '2025-05-27', NULL, '2025-05-27 02:40:18'),
+(3, 4, 'expense', 1200.00, 'food', '2025-05-27', NULL, '2025-05-27 02:40:59'),
+(4, 4, 'expense', 1200.00, 'food', '2025-05-27', NULL, '2025-05-27 02:41:05'),
+(5, 4, 'expense', 1200.00, 'food', '2025-05-27', NULL, '2025-05-27 02:41:20'),
+(6, 4, 'expense', 1200.00, 'food', '2025-05-27', NULL, '2025-05-27 02:41:26'),
+(7, 4, 'expense', 1200.00, 'food', '2025-05-27', NULL, '2025-05-27 02:41:45'),
+(8, 4, 'income', 50000.00, 'salary', '2025-05-27', NULL, '2025-05-27 02:59:08'),
+(9, 4, 'income', 50000.00, 'salary', '2025-05-27', NULL, '2025-05-27 03:02:58'),
+(10, 4, 'income', 50000.00, 'salary', '2025-05-27', NULL, '2025-05-27 03:12:45'),
+(11, 4, 'income', 50000.00, 'salary', '2025-05-27', NULL, '2025-05-27 03:13:09'),
+(12, 4, 'income', 50000.00, 'salary', '2025-05-27', NULL, '2025-05-27 03:13:17');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `journal_entries`
+--
+
+CREATE TABLE `journal_entries` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `mood` varchar(50) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `nutrition_logs`
+--
+
+CREATE TABLE `nutrition_logs` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `meal_type` varchar(50) NOT NULL,
+  `food_items` text NOT NULL,
+  `calories` int(11) NOT NULL,
+  `logged_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `questions`
 --
 
@@ -168,10 +311,45 @@ CREATE TABLE `quiz_answers` (
 CREATE TABLE `quiz_results` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `physical_score` int(11) NOT NULL,
-  `mental_score` int(11) NOT NULL,
-  `lifestyle_score` int(11) NOT NULL,
-  `created_at` datetime NOT NULL
+  `quiz_id` int(11) NOT NULL,
+  `score` int(11) NOT NULL,
+  `total_points` int(11) NOT NULL,
+  `completed_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `recurring_transactions`
+--
+
+CREATE TABLE `recurring_transactions` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `type` enum('income','expense') NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `category` varchar(50) NOT NULL,
+  `frequency` enum('daily','weekly','monthly','yearly') NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `relaxation_sessions`
+--
+
+CREATE TABLE `relaxation_sessions` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `session_type` varchar(50) NOT NULL,
+  `duration` int(11) NOT NULL,
+  `completed_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -199,20 +377,219 @@ CREATE TABLE `users` (
   `last_name` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('Admin','User') NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `role` enum('Admin','User') NOT NULL DEFAULT 'User',
+  `last_login` datetime DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `role`, `created_at`) VALUES
-(1, 'James ', 'Pama', 'James', '$2y$10$BAGrz12tn4vuz50fvHWAReudRc1RV9OsTTBGw.L4zCl', 'Admin', '2025-05-22 03:19:27'),
-(3, 'John Abner', 'Garzon', 'Admin1@gmail.com', '$2y$10$DvJVL1GhO3Ivik73LBwm0eSGLdeg79az34q5E1KyYbh', 'Admin', '2025-05-25 13:00:25'),
-(4, 'Test1', 'Test1', 'Test1@ewell-php.gov', '$2y$10$qjzlrbg0hThzIpuHrq9NNOmHngOzuICS6MJFT5SHjuF', 'Admin', '2025-05-25 13:09:46'),
-(0, 'Admin', 'User', 'admin@ewell.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Admin', '2025-05-26 02:39:50'),
-(0, 'Test', 'User', 'test@ewell.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'User', '2025-05-26 02:39:50');
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `role`, `last_login`, `created_at`, `updated_at`) VALUES
+(3, 'Admin', 'User', 'admin@ewell.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Admin', NULL, '2025-05-26 13:41:41', NULL),
+(4, 'Test', 'User', 'test@ewell.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'User', NULL, '2025-05-26 13:41:41', NULL);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `budgets`
+--
+ALTER TABLE `budgets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_budgets_user_id` (`user_id`),
+  ADD KEY `idx_budgets_category` (`category`);
+
+--
+-- Indexes for table `expenses`
+--
+ALTER TABLE `expenses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_expenses_user_id` (`user_id`),
+  ADD KEY `idx_expenses_date` (`date`),
+  ADD KEY `idx_expenses_category` (`category`);
+
+--
+-- Indexes for table `financial_goals`
+--
+ALTER TABLE `financial_goals`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_financial_goals_user_id` (`user_id`),
+  ADD KEY `idx_financial_goals_deadline` (`deadline`);
+
+--
+-- Indexes for table `financial_transactions`
+--
+ALTER TABLE `financial_transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `journal_entries`
+--
+ALTER TABLE `journal_entries`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_journal_user` (`user_id`);
+
+--
+-- Indexes for table `nutrition_logs`
+--
+ALTER TABLE `nutrition_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_nutrition_user` (`user_id`);
+
+--
+-- Indexes for table `quiz_results`
+--
+ALTER TABLE `quiz_results`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_quiz_user` (`user_id`);
+
+--
+-- Indexes for table `recurring_transactions`
+--
+ALTER TABLE `recurring_transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `relaxation_sessions`
+--
+ALTER TABLE `relaxation_sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_relaxation_user` (`user_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `budgets`
+--
+ALTER TABLE `budgets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `expenses`
+--
+ALTER TABLE `expenses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `financial_goals`
+--
+ALTER TABLE `financial_goals`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `financial_transactions`
+--
+ALTER TABLE `financial_transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `journal_entries`
+--
+ALTER TABLE `journal_entries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `nutrition_logs`
+--
+ALTER TABLE `nutrition_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `quiz_results`
+--
+ALTER TABLE `quiz_results`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `recurring_transactions`
+--
+ALTER TABLE `recurring_transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `relaxation_sessions`
+--
+ALTER TABLE `relaxation_sessions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `budgets`
+--
+ALTER TABLE `budgets`
+  ADD CONSTRAINT `budgets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `expenses`
+--
+ALTER TABLE `expenses`
+  ADD CONSTRAINT `expenses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `financial_goals`
+--
+ALTER TABLE `financial_goals`
+  ADD CONSTRAINT `financial_goals_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `financial_transactions`
+--
+ALTER TABLE `financial_transactions`
+  ADD CONSTRAINT `financial_transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `journal_entries`
+--
+ALTER TABLE `journal_entries`
+  ADD CONSTRAINT `fk_journal_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `nutrition_logs`
+--
+ALTER TABLE `nutrition_logs`
+  ADD CONSTRAINT `fk_nutrition_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `quiz_results`
+--
+ALTER TABLE `quiz_results`
+  ADD CONSTRAINT `fk_quiz_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `recurring_transactions`
+--
+ALTER TABLE `recurring_transactions`
+  ADD CONSTRAINT `recurring_transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `relaxation_sessions`
+--
+ALTER TABLE `relaxation_sessions`
+  ADD CONSTRAINT `fk_relaxation_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
