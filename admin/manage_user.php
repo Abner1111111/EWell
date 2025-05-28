@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../db_connection/database.php';
+include '../back_end/session.php';  
 
 // Initialize variables
 $first_name = $last_name = $email = $role = "";

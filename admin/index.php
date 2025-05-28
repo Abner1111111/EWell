@@ -1,11 +1,9 @@
 <?php
 session_start();
 include '../db_connection/database.php';
+include '../back_end/session.php';  
 
-
-
-// Get admin name
-$admin_name = 'Admin'; // Default name
+$admin_name = 'Admin'; 
 $admin_id = $_SESSION['user_id'];
 $stmt = $conn->prepare("SELECT first_name, last_name FROM users WHERE id = ?");
 $stmt->bind_param("i", $admin_id);
@@ -32,7 +30,7 @@ if ($admin) {
 </head>
 <body>
     <?php include "include/sidebar.php";?>
-    <!-- Navigation -->
+
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="index.php">EWell Admin</a>

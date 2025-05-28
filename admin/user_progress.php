@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../db_connection/database.php';
+include '../back_end/session.php';
 
 // Check if user is logged in and is an admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
@@ -18,7 +19,7 @@ $sql = "SELECT
             u.last_login,
             u.created_at,
             (SELECT COUNT(*) FROM journal_entries WHERE user_id = u.id) as journal_entries,
-            (SELECT COUNT(*) FROM quiz_results WHERE user_id = u.id) as quiz_attempts,
+            (SELECT COUNT(*) FROM quiz_results WHERE user_id = u.id) as total_points,
             (SELECT COUNT(*) FROM relaxation_sessions WHERE user_id = u.id) as relaxation_sessions,
             (SELECT COUNT(*) FROM nutrition_logs WHERE user_id = u.id) as nutrition_logs
         FROM users u
@@ -36,6 +37,8 @@ $result = $conn->query($sql);
     <title>EWell - User Progress Tracking</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    
     <link rel="stylesheet" href="../css/admin_sidebar.css">
     <link rel="stylesheet" href="../css/admin_create_quiz.css">
     <link rel="stylesheet" href="../css/variables.css">
@@ -117,9 +120,9 @@ $result = $conn->query($sql);
                                                     <div class="stat-label">Journal Entries</div>
                                                 </div>
                                                 <div class="stat-item">
-                                                    <i class="fas fa-question-circle"></i>
-                                                    <div class="stat-value"><?php echo $user['quiz_attempts']; ?></div>
-                                                    <div class="stat-label">Quiz Attempts</div>
+                                                <i class="bi bi-lightbulb-fill"></i>
+                                                    <div class="stat-value"><?php echo $user['total_points']; ?></div>
+                                                    <div class="stat-label">Quiz points</div>
                                                 </div>
                                                 <div class="stat-item">
                                                     <i class="fas fa-spa"></i>

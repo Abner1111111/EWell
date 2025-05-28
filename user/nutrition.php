@@ -47,19 +47,7 @@
                             <a href="#" class="register-btn">View Full Plan</a>
                         </div>
 
-                        <div class="nutrition-card">
-                            <h3><i class="fas fa-comments"></i> Virtual Nutritionist Chat</h3>
-                            <div class="chat-container">
-                                <div class="chat-messages">
-                                    <!-- Chat messages will be loaded here -->
-                                    <p class="system-message">Welcome to your nutrition consultation! How can I help you today?</p>
-                                </div>
-                                <div class="chat-input">
-                                    <input type="text" placeholder="Type your message...">
-                                    <button>Send</button>
-                                </div>
-                            </div>
-                        </div>
+                       
 
                         <div class="nutrition-card">
                             <h3><i class="fas fa-chalkboard-teacher"></i> Upcoming Workshops</h3>

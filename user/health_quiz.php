@@ -1,14 +1,8 @@
 <?php
 session_start();
 include '../db_connection/database.php';
+include '../back_end/session.php';  
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../main/login.php');
-    exit;
-}
-
-// Fetch the health quiz
 $sql = "SELECT * FROM quizzes WHERE title = 'Health Assessment' LIMIT 1";
 $result = $conn->query($sql);
 $quiz = $result->fetch_assoc();
