@@ -55,7 +55,40 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </a>
         </li>
         
+ 
+        <!-- Announcement & News -->
         <li class="menu-section">
+            <span>Announcement & News</span>
+        </li>
+        
+        <li class="<?php echo $current_page === 'Announcement.php' ? 'active' : ''; ?>">
+                    <a href="Announcement.php">
+                    <i class="bi bi-bell-fill"></i>
+                        <span>Manage Announcement</span>
+                    </a>
+                </li>
+            
+        <li class="<?php echo $current_page === 'News.php' ? 'active' : ''; ?>">
+            <a href="News.php">
+            <i class="bi bi-newspaper"></i>
+                <span>Manage News</span>
+            </a>
+        </li>
+
+
+        <!-- Events -->
+        <li class="menu-section">
+            <span>Events</span>
+        </li>
+
+        <li class="<?php echo $current_page === 'Events.php' ? 'active' : ''; ?>">
+            <a href="Events.php">
+            <i class="bi bi-calendar-date"></i>
+                <span>Manage Events</span>
+            </a>
+        </li>
+        
+       <li class="menu-section">
             <span>Analytics & Reports</span>
         </li>
         
@@ -72,7 +105,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <span>Reports</span>
             </a>
         </li>
-        
+
+
+        <!-- Settings -->
         <li class="menu-section">
             <span>Settings</span>
         </li>
