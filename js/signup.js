@@ -73,6 +73,33 @@ document.addEventListener('DOMContentLoaded', function() {
             if (password.value !== confirmPassword.value) {
                 confirmPassword.classList.add('error');
                 isValid = false;
+                // Show error message
+                let errorMsg = confirmPassword.parentNode.querySelector('.error-text');
+                if (!errorMsg) {
+                    errorMsg = document.createElement('span');
+                    errorMsg.className = 'error-text';
+                    errorMsg.style.color = '#f44336';
+                    errorMsg.style.fontSize = '12px';
+                    confirmPassword.parentNode.appendChild(errorMsg);
+                }
+                errorMsg.textContent = 'Passwords do not match';
+            } else {
+                confirmPassword.classList.remove('error');
+                const errorMsg = confirmPassword.parentNode.querySelector('.error-text');
+                if (errorMsg) {
+                    errorMsg.remove();
+                }
+            }
+        }
+
+        // Special validation for terms checkbox in step 4
+        if (currentStep === 4) {
+            const termsCheckbox = document.querySelector('input[name="terms"]');
+            if (!termsCheckbox.checked) {
+                isValid = false;
+                termsCheckbox.classList.add('error');
+            } else {
+                termsCheckbox.classList.remove('error');
             }
         }
 
@@ -99,32 +126,18 @@ document.addEventListener('DOMContentLoaded', function() {
         updateButtons();
     });
 
-    // Form submission handler
+    // Form submission handler - REMOVED THE PREVENTION AND JAVASCRIPT OVERRIDE
+    // The form will now submit normally to PHP for processing
     form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        if (validateStep()) {
-            // Collect all form data
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            
-            // Add checkbox values
-            const dietaryPreferences = Array.from(formData.getAll('dietary'));
-            const notifications = Array.from(formData.getAll('notifications'));
-            
-            data.dietaryPreferences = dietaryPreferences;
-            data.notifications = notifications;
-
-            // Here you would typically send the data to your server
-            console.log('Form submitted:', data);
-            
-            // Show success message or redirect
-            alert('Account created successfully!');
-            window.location.href = 'login.html';
+        // Only validate the current step before allowing submission
+        if (!validateStep()) {
+            e.preventDefault();
+            return false;
         }
+        // If validation passes, let the form submit normally to PHP
     });
 
     // Initialize
     updateProgress();
     updateButtons();
-}); 
+});
