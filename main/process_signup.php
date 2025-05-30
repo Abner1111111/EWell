@@ -16,7 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get and sanitize form data
     $firstName = sanitize_input($_POST['firstName']);
     $lastName = sanitize_input($_POST['lastName']);
+    $birthDate = sanitize_input($_POST['birth_date']);
+    $gender = sanitize_input($_POST['gender']);
     $email = sanitize_input($_POST['email']);
+    $phoneNo = sanitize_input($_POST['phone_no']);
+    $height = sanitize_input($_POST['height']);
+    $weight = sanitize_input($_POST['weight']);
+    $activityLevel = sanitize_input($_POST['activity_level']);
+    $healthGoals = sanitize_input($_POST['health_goals']);
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
 
@@ -50,8 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Prepare and execute the insert statement
-    $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password, role, created_at) VALUES (?, ?, ?, ?, 'User', NOW())");
-    $stmt->bind_param("ssss", $firstName, $lastName, $email, $hashedPassword);
+    $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, birth_date, gender, email, phone_no, height, weight, activity_level, health_goals, password, role, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'User', NOW())");
+    $stmt->bind_param("ssssssddsss", $firstName, $lastName, $birthDate, $gender, $email, $phoneNo, $height, $weight, $activityLevel, $healthGoals, $hashedPassword);
 
     if ($stmt->execute()) {
         $_SESSION['success'] = "Registration successful! Please login.";
