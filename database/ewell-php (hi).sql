@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2025 at 09:10 AM
+-- Generation Time: May 30, 2025 at 03:07 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -239,6 +239,40 @@ CREATE TABLE `journal_entries` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `news_articles`
+--
+
+CREATE TABLE `news_articles` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` text DEFAULT NULL,
+  `category` enum('World News','Local News') NOT NULL,
+  `status` enum('Active','Inactive','Draft','Archived') NOT NULL DEFAULT 'Draft',
+  `publication_date` date DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `author` varchar(100) DEFAULT NULL,
+  `summary` text DEFAULT NULL,
+  `image_url` varchar(500) DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `news_link` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `news_articles`
+--
+
+INSERT INTO `news_articles` (`id`, `title`, `content`, `category`, `status`, `publication_date`, `created_at`, `updated_at`, `author`, `summary`, `image_url`, `slug`, `news_link`) VALUES
+(2, 'Testing of the News', 'Content of this is hooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo', 'Local News', 'Inactive', '2025-05-29', '2025-05-29 15:24:11', '2025-05-30 00:46:23', '', 'Summary of hoooooooooooooooooooooooooooooo', 'uploads/news/68387c1bc0f75.webp', 'testing-of-the-news', ''),
+(3, 'Test of this', 'test drove vehicle vehicle vehicle vehicle vehicle vehicle', 'World News', 'Inactive', '2025-05-29', '2025-05-29 15:38:50', '2025-05-29 17:21:42', '', 'test vehicle vehicle vehicle vehicle', 'uploads/news/68387f8a2be40.jpg', 'test-of-this', ''),
+(5, 'SOCCSKSARGEN sets new standard for immunization', 'KORONADAL CITY, South Cotabato (PIA) — A United Nations Children’s Fund official commended the Department of Health-Center for Health Development (DOH-CHD) in Region 12 for initiating the SOCCSKSARGEN Regional Immunization Coalition (SRIC), the first of its kind in the Philippines.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\nDr. Carla Orozco, an immunization specialist with UNICEF Philippines, described the SRIC as a “very important initiative.”\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n“Your groundbreaking initiative is a good testament of partners coming together and showcasing it to other regions for them to also learn from,” Orozco said during a recent SRIC steering committee forum in Davao City.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n“This is how we envision the immunization program to be—this is not the sole responsibility of the health sector or of the Department of Health. Really, it would take a village to raise a child, and that would take different stakeholders to support the government’s program to improve coverage,” Orozco added.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\nUNICEF, she emphasized, “is genuinely enthusiastic about this pioneering strategy, which also aligns with our global commitment to ensuring that every child receives the lifesaving vaccines they need.”\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\nOrozco pledged UNICEF’s consistent technical assistance and support to the coalition.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\nDr. Edvir Jane Montañer, DOH-CHD medical officer and regional program manager for the National Immunization Program, said the SRIC is a unified, multi-sectoral body designed to strengthen immunization programs and ensure equitable vaccine access in Region 12.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n“The specific functions of the SRIC are to: strengthen immunization governance and policy integration; support service delivery and workforce capacity; and support demand generation and community engagement with a focus on gender equity,” Montañer said.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\nSRIC comprises government agencies, non-governmental organizations, academic institutions, private sector partners, the business community, faith-based organizations, cultural groups, civil society organizations, women’s and youth groups, local government units, LGU-based leagues and various immunization and health partners.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\nFrom March 25 to 28, DOH-CHD Soccsksargen and UNICEF convened coalition member agency heads and SRIC focal persons in Davao City to finalize the SRIC’s structure and functions, along with member agency and partner roles and deliverables, before the coalition’s April 30, 2025, launch.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\nThe proposal to establish the coalition arose during the SOCCSKSARGEN Immunization Summit in February 2024. The alliance was further strengthened through an intersectoral meeting in June, a symposium on immunization featuring local chief executives in September and coalition-building workshops in December 2024 and January 2025.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\nThe SRIC was featured during the National Immunization Summit on Jan. 30, 2025.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\nDOH-CHD data indicates that from 2019 to 2024, SOCCSKSARGEN Region achieved only 61 percent immunization coverage, leaving about 200,000 children unvaccinated.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\nThese gaps, DOH-CHD 12 noted, resulted in pockets of vaccine-preventable diseases in 2023 and 2024.\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\n\\\\\\\\\\\\\\\\r\\\\\\\\\\\\\\\\nMontañer said the multifaceted gaps and challenges in the immunization program require a collective, multisectoral approach, highlighting the need for the SRIC. (DED, PIA Region 12)', 'World News', 'Active', '2025-05-29', '2025-05-29 15:51:59', '2025-05-30 00:17:54', 'hey', 'testTest Test', 'uploads/news/6838829fc6ad4.jpg', 'soccsksargen-sets-new-standard-for-immunization', ''),
+(6, 'Hello', 'Hi', 'World News', 'Draft', '2025-05-30', '2025-05-29 17:09:27', '2025-05-30 00:48:45', '', 'Test', 'uploads/news/683894c7dbf00.jpg', 'hello', ''),
+(7, 'Woh', 'Hehe', 'Local News', 'Active', '2025-05-29', '2025-05-29 17:29:32', '2025-05-29 17:29:32', 'Test', 'Hoho', 'uploads/news/6838997c06750.png', 'woh', ''),
+(8, 'Heeheh', 'Henlooooooo', 'World News', 'Archived', '2025-05-30', '2025-05-30 00:19:24', '2025-05-30 00:59:55', 'someoen', 'Hi', 'uploads/news/6838f98cba826.jpg', 'heeheh', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `nutrition_logs`
 --
 
@@ -456,6 +490,16 @@ ALTER TABLE `journal_entries`
   ADD KEY `fk_journal_user` (`user_id`);
 
 --
+-- Indexes for table `news_articles`
+--
+ALTER TABLE `news_articles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `slug` (`slug`),
+  ADD KEY `idx_category` (`category`),
+  ADD KEY `idx_status` (`status`),
+  ADD KEY `idx_publication_date` (`publication_date`);
+
+--
 -- Indexes for table `nutrition_logs`
 --
 ALTER TABLE `nutrition_logs`
@@ -529,6 +573,12 @@ ALTER TABLE `financial_transactions`
 --
 ALTER TABLE `journal_entries`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `news_articles`
+--
+ALTER TABLE `news_articles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `nutrition_logs`

@@ -2,6 +2,7 @@
 
 include '../db_connection/database.php';
 include '../back_end/quiz_operations.php';
+include '../back_end/session.php';  
 
 // Check if user is logged in
 

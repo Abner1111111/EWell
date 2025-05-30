@@ -1,6 +1,6 @@
 <?php
 include '../db_connection/database.php';
-
+include '../back_end/session.php';  
 // Read the SQL file
 $sql = file_get_contents('../database/health_quiz_data.sql');
 
