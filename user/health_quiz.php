@@ -3,7 +3,7 @@ session_start();
 include '../db_connection/database.php';
 include '../back_end/session.php';  
 
-$sql = "SELECT * FROM quizzes WHERE title = 'Health Assessment' LIMIT 1";
+$sql = "SELECT * FROM quizzes WHERE title = 'Health Trivia Quiz' LIMIT 1";
 $result = $conn->query($sql);
 $quiz = $result->fetch_assoc();
 
