@@ -89,20 +89,20 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </li>
         
        <li class="menu-section">
-            <span>Analytics & Reports</span>
+            <span>Reports & Feedbacks</span>
         </li>
         
-        <li class="<?php echo $current_page === 'analytics.php' ? 'active' : ''; ?>">
-            <a href="analytics.php">
-                <i class="fas fa-chart-bar"></i>
-                <span>Analytics</span>
-            </a>
-        </li>
-        
+      
         <li class="<?php echo $current_page === 'reports.php' ? 'active' : ''; ?>">
             <a href="reports.php">
                 <i class="fas fa-file-alt"></i>
                 <span>Reports</span>
+            </a>
+        </li>
+          <li class="<?php echo $current_page === 'Feedback.php' ? 'active' : ''; ?>">
+            <a href="Feedback.php">
+               <i class="bi bi-chat-square-quote-fill"></i>
+                <span>Feedbacks</span>
             </a>
         </li>
 
