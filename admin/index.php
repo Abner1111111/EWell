@@ -157,8 +157,13 @@ if ($admin) {
                         </h5>
                     </div>
                     <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="userActivityChart"></canvas>
+                        <div class="text-center mb-4">
+                            <i class="fas fa-clipboard-list feature-icon"></i>
+                        </div>
+                        <p class="card-text">Create and manage quizzes, questions, and answers for your wellness platform.</p>
+                        <div class="d-grid gap-2">
+                            <a href="create_quiz.php" class="btn btn-primary">Create New Quiz</a>
+                            <a href="manage_quizzes.php" class="btn btn-outline-primary">Manage Existing Quizzes</a>
                         </div>
                     </div>
                 </div>
@@ -171,13 +176,17 @@ if ($admin) {
                         </h5>
                     </div>
                     <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="quizPerformanceChart"></canvas>
+                        <div class="text-center mb-4">
+                            <i class="fas fa-users feature-icon"></i>
+                        </div>
+                        <p class="card-text">View and manage user accounts, track progress, and monitor engagement.</p>
+                        <div class="d-grid gap-2">
+                            <a href="manage_users.php" class="btn btn-primary">View All Users</a>
+                            <a href="user_progress.php" class="btn btn-outline-primary">Track User Progress</a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
         <!-- Quick Actions and Recent Activity -->
         <div class="row">
