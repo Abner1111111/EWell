@@ -3,7 +3,7 @@ session_start();
 include '../db_connection/database.php';
 include '../back_end/session.php';  
 
-$sql = "SELECT * FROM quizzes WHERE title = 'Health Assessment' LIMIT 1";
+$sql = "SELECT * FROM quizzes WHERE title = 'Health Trivia Quiz' LIMIT 1";
 $result = $conn->query($sql);
 $quiz = $result->fetch_assoc();
 
@@ -427,6 +427,96 @@ while ($row = $questions_result->fetch_assoc()) {
         @keyframes confetti-fall {
             0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
             100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            .quiz-content {
+                padding: 0.5rem;
+                max-width: 100vw;
+            }
+            .intro-card {
+                padding: 1rem;
+                border-radius: 12px;
+                max-width: 100vw;
+            }
+            .quiz-info {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                margin: 1rem 0;
+            }
+            .info-item {
+                font-size: 0.95rem;
+                padding: 0.5rem 0.2rem;
+            }
+            .start-quiz-btn {
+                padding: 0.7rem 1.2rem;
+                font-size: 1rem;
+                width: 100%;
+                justify-content: center;
+            }
+            .quiz-questions {
+                padding: 0.5rem;
+            }
+            .question-container {
+                padding: 1rem;
+                border-radius: 12px;
+            }
+            .question {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+            .options {
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+            .option {
+                padding: 0.7rem;
+                font-size: 0.98rem;
+            }
+            .progress-bar {
+                margin-bottom: 1rem;
+            }
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .nav-btn {
+                width: 100%;
+                font-size: 1rem;
+                padding: 0.7rem 0.5rem;
+            }
+            .quiz-results {
+                padding: 0.5rem;
+            }
+            .results-card {
+                padding: 1rem;
+                border-radius: 12px;
+            }
+            .results-summary {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin: 1rem 0;
+            }
+            .score {
+                font-size: 1.1rem;
+            }
+            .recommendations ul {
+                padding: 0;
+            }
+            .recommendations li {
+                padding: 0.7rem;
+                font-size: 0.95rem;
+            }
+            .action-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+            .action-btn {
+                width: 100%;
+                font-size: 1rem;
+                padding: 0.7rem 0.5rem;
+            }
         }
     </style>
 </head>

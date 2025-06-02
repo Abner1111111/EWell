@@ -132,12 +132,13 @@ while ($row = $result->fetch_assoc()) {
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/budgeting.css">
+   
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
    
 </head>
 <body>
     <div class="dashboard-container">
-        <?php include 'includes/header.php'; ?>
+    <?php include 'includes/header.php'; ?>
         <div class="budget-container">
             <!-- Header Section -->
             <div class="budget-header">
