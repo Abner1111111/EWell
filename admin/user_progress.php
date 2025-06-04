@@ -49,28 +49,7 @@ $result = $conn->query($sql);
         <?php include 'include/sidebar.php'; ?>
 
         <main class="main-content">
-            <nav class="navbar navbar-expand-lg">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="index.php">
-                        <i class="fas fa-heartbeat me-2"></i>EWell Admin
-                    </a>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="../index.php">
-                                    <i class="fas fa-external-link-alt me-1"></i>View Site
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="../logout.php">
-                                    <i class="fas fa-sign-out-alt me-1"></i>Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
+            <?php include 'include/header.php'; ?>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
