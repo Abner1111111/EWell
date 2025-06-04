@@ -25,7 +25,7 @@ if (isset($_POST['update_announcement'])) {
 
     // If no errors, proceed with announcement update
     if (empty($errors)) {
-        $stmt = mysqli_prepare($conn, "UPDATE announcements SET title = ?, content = ?, status = ? WHERE id = ?");
+        $stmt = mysqli_prepare($conn, "UPDATE announcements SET title = ?, content = ?, status = ? WHERE announ_id = ?");
         if ($stmt) {
             mysqli_stmt_bind_param($stmt, "sssi", $title, $content, $status, $announcement_id);
             $result = mysqli_stmt_execute($stmt);
@@ -77,6 +77,22 @@ if (isset($_POST['create_announcement'])) {
             $errors[] = "Database error: " . mysqli_error($conn);
         }
     }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+    $announ_id = intval($_POST['id']);
+
+    $stmt = $conn->prepare("DELETE FROM announcements WHERE announ_id = ?");
+    $stmt->bind_param("i", $announ_id);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Announcement deleted successfully.']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error deleting the announcement.']);
+    }
+
+    $stmt->close();
+    exit;
 }
 
 // Fetch existing announcements
@@ -251,10 +267,10 @@ $announcements_result = mysqli_query($conn, $announcements_query);
                                                 <td><?php echo date('M d, Y', strtotime($announcement['created_at'])); ?></td>
                                                 <td>
                                                     <div class="action-buttons">
-                                                        <button class="btn btn-sm btn-outline-primary btn-edit me-1" title="Edit" data-id="<?php echo $announcement['id']; ?>" data-content="<?php echo htmlspecialchars($announcement['content']); ?>" data-status="<?php echo $announcement['status']; ?>">
+                                                        <button class="btn btn-sm btn-outline-primary btn-edit me-1" title="Edit" data-id="<?php echo $announcement['announ_id']; ?>" data-content="<?php echo htmlspecialchars($announcement['content']); ?>" data-status="<?php echo $announcement['status']; ?>">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <button class="btn btn-sm btn-outline-danger btn-delete" title="Delete">
+                                                        <button class="btn btn-sm btn-outline-danger btn-delete" title="Delete" data-id="<?php echo $announcement['announ_id']; ?>">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </div>
@@ -361,14 +377,35 @@ $announcements_result = mysqli_query($conn, $announcements_query);
         // Delete functionality
         document.querySelectorAll('.btn-delete').forEach(btn => {
             btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
                 const row = this.closest('tr');
                 const title = row.querySelector('td:first-child').textContent;
+                
                 if (confirm(`Are you sure you want to delete the announcement: ${title}?`)) {
-                    // Implement delete functionality
-                    alert(`Deleting announcement: ${title}`);
+                    fetch('Announcement.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `id=${id}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message);
+                            row.remove(); // Remove the row from the table
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while deleting the announcement.');
+                    });
                 }
             });
         });
+
     </script>
 </body>
 </html> 
