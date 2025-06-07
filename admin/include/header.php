@@ -11,7 +11,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="../main/index.html">
+                                <a class="nav-link" href="../main/index.php">
                                     <i class="fas fa-external-link-alt me-1"></i>View Site
                                 </a>
                             </li>

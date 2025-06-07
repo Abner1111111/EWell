@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="signup-container">
         <div class="signup-content">
             <div class="signup-header">
-                <a href="index.html" class="logo">E<span>well</span></a>
+                <a href="index.php" class="logo">E<span>well</span></a>
                 <h1>Create Your Account</h1>
                 <p>Join our wellness community and start your journey</p>
                 <?php if (isset($_SESSION['error'])): ?>

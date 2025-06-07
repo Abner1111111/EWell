@@ -1,14 +1,14 @@
 <?php
 $host = 'localhost';
+$dbname = 'ewell-php';
 $username = 'root';
 $password = '';
-$database = 'ewell-php';
 
-// Create connection
-$conn = new mysqli($host, $username, $password, $database);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+    die();
 }
 ?> 
