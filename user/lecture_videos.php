@@ -209,10 +209,17 @@ include '../back_end/session.php';
                 </div>
 
                 <div class="videos-grid">
-                    <!-- Video Card 1 -->
+
+                         <!---->
+                    <!-- NOTE: -->
+            <!-- instead na (/watch?v=8BvLZbgb9CA)  i change to (embed/8BvLZbgb9CA)-->
+              <!-------------------------------------------------------------->
+
+
+
                     <div class="video-card" data-video-url="https://www.youtube.com/embed/4WAgAxLx2WU">
                         <div class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/4WAgAxLx2WU/maxresdefault.jpg"">
+                            <img src="https://img.youtube.com/vi/4WAgAxLx2WU/maxresdefault.jpg" alt="Video thumbnail">
                             <div class="play-button">
                                 <i class="fas fa-play"></i>
                             </div>
@@ -230,10 +237,9 @@ include '../back_end/session.php';
                         </div>
                     </div>
 
-                    <!-- Video Card 2 -->
-                    <div class="video-card" data-video-url="https://www.youtube.com/watch?v=8BvLZbgb9CA">
+                    <div class="video-card" data-video-url="https://www.youtube.com/embed/8BvLZbgb9CA">
                         <div class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/8BvLZbgb9CA/maxresdefault.jpg" >
+                            <img src="https://img.youtube.com/vi/8BvLZbgb9CA/maxresdefault.jpg" alt="Video thumbnail">
                             <div class="play-button">
                                 <i class="fas fa-play"></i>
                             </div>
@@ -251,10 +257,9 @@ include '../back_end/session.php';
                         </div>
                     </div>
 
-                    <!-- Video Card 3 -->
-                    <div class="video-card" data-video-url="hhttps://www.youtube.com/watch?v=8mbKSTQRbRg">
+                    <div class="video-card" data-video-url="https://www.youtube.com/embed/8mbKSTQRbRg">
                         <div class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/8mbKSTQRbRg/maxresdefault.jpg" >
+                            <img src="https://img.youtube.com/vi/8mbKSTQRbRg/maxresdefault.jpg" alt="Video thumbnail">
                             <div class="play-button">
                                 <i class="fas fa-play"></i>
                             </div>
@@ -272,10 +277,9 @@ include '../back_end/session.php';
                         </div>
                     </div>
 
-                    <!-- Video Card 4 -->
-                    <div class="video-card" data-video-url="https://www.youtube.com/watch?v=VcxZL6wj2sA">
+                    <div class="video-card" data-video-url="https://www.youtube.com/embed/VcxZL6wj2sA">
                         <div class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/VcxZL6wj2sA/maxresdefault.jpg">
+                            <img src="https://img.youtube.com/vi/VcxZL6wj2sA/maxresdefault.jpg" alt="Video thumbnail">
                             <div class="play-button">
                                 <i class="fas fa-play"></i>
                             </div>
@@ -297,7 +301,6 @@ include '../back_end/session.php';
         </main>
     </div>
 
-    <!-- Video Modal -->
     <div id="videoModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000;">
         <div class="modal-content" style="position: relative; width: 80%; max-width: 1000px; margin: 50px auto; background: #000;">
             <span class="close-modal" style="position: absolute; right: -30px; top: -30px; color: white; font-size: 28px; cursor: pointer;">&times;</span>
@@ -315,7 +318,6 @@ include '../back_end/session.php';
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
                 filterButtons.forEach(btn => btn.classList.remove('active'));
-                // Add active class to clicked button
                 button.classList.add('active');
 
                 const category = button.textContent;
@@ -342,7 +344,7 @@ include '../back_end/session.php';
             button.addEventListener('click', () => {
                 const videoCard = button.closest('.video-card');
                 const videoUrl = videoCard.dataset.videoUrl;
-                videoFrame.src = videoUrl;
+                videoFrame.src = `${videoUrl}?autoplay=1`;
                 modal.style.display = 'block';
             });
         });
