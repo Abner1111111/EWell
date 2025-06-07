@@ -2,6 +2,23 @@
 session_start();
 include '../db_connection/database.php';
 include '../back_end/session.php';
+
+// Get selected category from URL parameter
+$selected_category = isset($_GET['category']) ? $_GET['category'] : 'All';
+
+// Prepare the SQL query based on category selection
+if ($selected_category !== 'All') {
+    $sql = "SELECT * FROM lecture_videos WHERE category = ? ORDER BY created_at DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $selected_category);
+} else {
+    $sql = "SELECT * FROM lecture_videos ORDER BY created_at DESC";
+    $stmt = $conn->prepare($sql);
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
+$videos = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +67,9 @@ include '../back_end/session.php';
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         .video-card:hover {
@@ -104,6 +124,9 @@ include '../back_end/session.php';
 
         .video-info {
             padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .video-title {
@@ -111,6 +134,10 @@ include '../back_end/session.php';
             font-weight: 600;
             color: var(--dark-color);
             margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .video-description {
@@ -118,6 +145,11 @@ include '../back_end/session.php';
             font-size: 0.9rem;
             line-height: 1.5;
             margin-bottom: 1rem;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .video-meta {
@@ -126,12 +158,7 @@ include '../back_end/session.php';
             align-items: center;
             color: var(--text-light);
             font-size: 0.85rem;
-        }
-
-        .video-duration {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            margin-top: auto;
         }
 
         .video-category {
@@ -157,6 +184,7 @@ include '../back_end/session.php';
             color: var(--primary-color);
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
         }
 
         .filter-btn:hover,
@@ -165,40 +193,82 @@ include '../back_end/session.php';
             color: white;
         }
 
+        .no-videos {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-dark);
+            grid-column: 1 / -1;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 1001;
+            width: 30px;
+            height: 30px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
         @media (max-width: 768px) {
             .lecture-videos {
                 padding: 1rem;
             }
 
             .videos-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                grid-template-columns: 1fr;
                 gap: 1rem;
             }
 
-            .video-info {
-                padding: 1rem;
-            }
-
-            .video-title {
-                font-size: 1rem;
-            }
-
-            .video-description {
-                font-size: 0.85rem;
-            }
-
             .modal-content {
-                width: 95% !important;
-                margin: 0 auto !important;
-                position: absolute !important;
-                top: 50% !important;
-                left: 50% !important;
-                transform: translate(-50%, -50%) !important;
-            }
-
-            .close-modal {
-                right: 10px !important;
-                top: 10px !important;
+                width: 95%;
+                margin: 20px auto;
             }
         }
     </style>
@@ -215,167 +285,96 @@ include '../back_end/session.php';
                 </div>
 
                 <div class="filters">
-                    <button class="filter-btn active">All</button>
-                    <button class="filter-btn">Physical Health</button>
-                    <button class="filter-btn">Mental Health</button>
-                    <button class="filter-btn">Nutrition</button>
-                    <button class="filter-btn">Exercise</button>
+                    <a href="?category=All" class="filter-btn <?php echo $selected_category === 'All' ? 'active' : ''; ?>">All</a>
+                    <a href="?category=Physical Health" class="filter-btn <?php echo $selected_category === 'Physical Health' ? 'active' : ''; ?>">Physical Health</a>
+                    <a href="?category=Mental Health" class="filter-btn <?php echo $selected_category === 'Mental Health' ? 'active' : ''; ?>">Mental Health</a>
+                    <a href="?category=Nutrition" class="filter-btn <?php echo $selected_category === 'Nutrition' ? 'active' : ''; ?>">Nutrition</a>
+                    <a href="?category=Exercise" class="filter-btn <?php echo $selected_category === 'Exercise' ? 'active' : ''; ?>">Exercise</a>
+                    <a href="?category=Wellness" class="filter-btn <?php echo $selected_category === 'Wellness' ? 'active' : ''; ?>">Wellness</a>
                 </div>
 
                 <div class="videos-grid">
-
-                         <!---->
-                    <!-- NOTE: -->
-            <!-- instead na (/watch?v=8BvLZbgb9CA)  i change to (embed/8BvLZbgb9CA)-->
-              <!-------------------------------------------------------------->
-
-
-
-                    <div class="video-card" data-video-url="https://www.youtube.com/embed/4WAgAxLx2WU">
-                        <div class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/4WAgAxLx2WU/maxresdefault.jpg" alt="Video thumbnail">
-                            <div class="play-button">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="video-info">
-                            <h3 class="video-title">THE BATTLE OF GODS!🔥 - GEN vs T1 GAME 1 LCK SPRING 2025 W7D5 GENG ESPORTS vs T1 G1 LCK 2025</h3>
-                            <p class="video-description">GENG ESPORTS vs T1 GAME 1 LCK SPRING 2025 W7D5</p>
-                            <div class="video-meta">
-                                <div class="video-duration">
-                                    <i class="far fa-clock"></i>
-                                    <span>15:30</span>
+                    <?php if ($result->num_rows > 0): ?>
+                        <?php foreach ($videos as $video): ?>
+                            <div class="video-card" data-video-url="<?php echo htmlspecialchars($video['video_url']); ?>">
+                                <div class="video-thumbnail">
+                                    <img src="<?php echo htmlspecialchars($video['thumbnail_url']); ?>" 
+                                         alt="<?php echo htmlspecialchars($video['title']); ?> thumbnail">
+                                    <div class="play-button">
+                                        <i class="fas fa-play"></i>
+                                    </div>
                                 </div>
-                                <span class="video-category">Mental Health</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="video-card" data-video-url="https://www.youtube.com/embed/8BvLZbgb9CA">
-                        <div class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/8BvLZbgb9CA/maxresdefault.jpg" alt="Video thumbnail">
-                            <div class="play-button">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="video-info">
-                            <h3 class="video-title">PALOAP</h3>
-                            <p class="video-description">This vlog is also for you Boss Keng.</p>
-                            <div class="video-meta">
-                                <div class="video-duration">
-                                    <i class="far fa-clock"></i>
-                                    <span>20:15</span>
+                                <div class="video-info">
+                                    <h3 class="video-title"><?php echo htmlspecialchars($video['title']); ?></h3>
+                                    <p class="video-description"><?php echo htmlspecialchars($video['description']); ?></p>
+                                    <div class="video-meta">
+                                        <span class="video-category"><?php echo htmlspecialchars($video['category']); ?></span>
+                                    </div>
                                 </div>
-                                <span class="video-category">Nutrition</span>
                             </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="no-videos">
+                            <i class="fas fa-video fa-3x mb-3"></i>
+                            <h3>No videos available</h3>
+                            <p>There are no videos in this category yet.</p>
                         </div>
-                    </div>
-
-                    <div class="video-card" data-video-url="https://www.youtube.com/embed/8mbKSTQRbRg">
-                        <div class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/8mbKSTQRbRg/maxresdefault.jpg" alt="Video thumbnail">
-                            <div class="play-button">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="video-info">
-                            <h3 class="video-title">LIFE AFTER COLLEGE 2 (Work Experience) | Pinoy Animation</h3>
-                            <p class="video-description">HAPPY NEW YEARRRRR!!! Kumusta ang pagsalubong nyo sa bagong taon? Ako eto, ok naman. Stressed kasi andaming aberya bago ko naiupload tong video.... Hayst!! Pero buti ok na.</p>
-                            <div class="video-meta">
-                                <div class="video-duration">
-                                    <i class="far fa-clock"></i>
-                                    <span>18:45</span>
-                                </div>
-                                <span class="video-category">Exercise</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="video-card" data-video-url="https://www.youtube.com/embed/VcxZL6wj2sA">
-                        <div class="video-thumbnail">
-                            <img src="https://img.youtube.com/vi/VcxZL6wj2sA/maxresdefault.jpg" alt="Video thumbnail">
-                            <div class="play-button">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="video-info">
-                            <h3 class="video-title">Cecilion Performs His Ever Best gameplay | TOP GLOBAL CECILION BEST BUILD AND EMBLEM</h3>
-                            <p class="video-description">Cecilion Crushed enemies with 0 Death | BRUTAL DAMAGE | TOP GLOBAL CECILION BEST BUILD AND EMBLEM</p>
-                            <div class="video-meta">
-                                <div class="video-duration">
-                                    <i class="far fa-clock"></i>
-                                    <span>22:30</span>
-                                </div>
-                                <span class="video-category">Mental Health</span>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </main>
     </div>
 
-    <div id="videoModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000;">
-        <div class="modal-content" style="position: relative; width: 80%; max-width: 1000px; margin: 50px auto; background: #000;">
-            <span class="close-modal" style="position: absolute; right: -30px; top: -30px; color: white; font-size: 28px; cursor: pointer;">&times;</span>
-            <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-                <iframe id="videoFrame" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowfullscreen></iframe>
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="video-container">
+                <iframe id="videoFrame" allowfullscreen></iframe>
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Filter functionality
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const videoCards = document.querySelectorAll('.video-card');
-
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                const category = button.textContent;
-                
-                videoCards.forEach(card => {
-                    if (category === 'All') {
-                        card.style.display = 'block';
-                    } else {
-                        const cardCategory = card.querySelector('.video-category').textContent;
-                        card.style.display = cardCategory === category ? 'block' : 'none';
-                    }
-                });
-            });
-        });
-
         // Video Modal functionality
         const modal = document.getElementById('videoModal');
         const videoFrame = document.getElementById('videoFrame');
         const closeModal = document.querySelector('.close-modal');
 
         // Play button functionality
-        const playButtons = document.querySelectorAll('.play-button');
-        playButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const videoCard = button.closest('.video-card');
-                const videoUrl = videoCard.dataset.videoUrl;
+        document.querySelectorAll('.video-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const videoUrl = card.dataset.videoUrl;
                 videoFrame.src = `${videoUrl}?autoplay=1`;
                 modal.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
             });
         });
 
-        // Close modal when clicking the close button
+        // Close modal functionality
         closeModal.addEventListener('click', () => {
-            modal.style.display = 'none';
-            videoFrame.src = ''; // Stop the video
+            closeVideoModal();
         });
 
-        // Close modal when clicking outside the video
-        window.addEventListener('click', (event) => {
+        // Close modal when clicking outside
+        modal.addEventListener('click', (event) => {
             if (event.target === modal) {
-                modal.style.display = 'none';
-                videoFrame.src = ''; // Stop the video
+                closeVideoModal();
             }
         });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+
+        function closeVideoModal() {
+            modal.style.display = 'none';
+            videoFrame.src = ''; // Stop the video
+            document.body.style.overflow = ''; // Restore scrolling
+        }
     </script>
 </body>
 </html>
