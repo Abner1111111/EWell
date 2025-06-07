@@ -43,6 +43,110 @@
         text-align: center;
     }
 
+    /* Announcement Dropdown Styles */
+    .announcement-dropdown {
+        margin-right: 20px;
+    }
+
+    .announcement-icon {
+        position: relative;
+        color: var(--text-color);
+        font-size: 1.2rem;
+        padding: 8px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .announcement-icon:hover {
+        background-color: var(--light-gray);
+        color: var(--primary-color);
+    }
+
+    .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #ff4444;
+        color: white;
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 50%;
+        min-width: 18px;
+        text-align: center;
+    }
+
+    .announcement-content {
+        min-width: 300px;
+        padding: 0;
+    }
+
+    .announcement-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--light-gray);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .announcement-header h3 {
+        margin: 0;
+        font-size: 1rem;
+        color: var(--text-color);
+    }
+
+    .announcement-date {
+        font-size: 0.8rem;
+        color: var(--text-light);
+    }
+
+    .announcement-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 12px 15px;
+        border-bottom: 1px solid var(--light-gray);
+        transition: all 0.3s ease;
+    }
+
+    .announcement-item:hover {
+        background-color: var(--light-gray);
+    }
+
+    .announcement-item i {
+        margin-top: 3px;
+        color: var(--primary-color);
+    }
+
+    .announcement-text {
+        margin-left: 10px;
+    }
+
+    .announcement-text p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--text-color);
+    }
+
+    .announcement-text small {
+        color: var(--text-light);
+        font-size: 0.8rem;
+    }
+
+    .announcement-footer {
+        padding: 10px 15px;
+        text-align: center;
+        border-top: 1px solid var(--light-gray);
+    }
+
+    .view-all {
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        text-decoration: none;
+    }
+
+    .view-all:hover {
+        text-decoration: underline;
+    }
+
     @keyframes fadeIn {
         from {
             opacity: 0;
@@ -78,6 +182,9 @@
                 <li><a href="health_quiz.php" <?php echo basename($_SERVER['PHP_SELF']) == 'health_quiz.php' ? 'class="active"' : ''; ?>>
                         <i class=" fas fa-question-circle"></i> Health Quiz
                     </a></li>
+                <li><a href="lecture_videos.php" <?php echo basename($_SERVER['PHP_SELF']) == 'lecture_videos.php' ? 'class="active"' : ''; ?>>
+                        <i class="fas fa-video"></i> Lecture Videos
+                    </a></li>
                 <?php
                 $currentPage = basename($_SERVER['PHP_SELF']);
                 $toolPages = ['physical_tools.php', 'mental_tools.php', 'emotional_tools.php', 'budgeting.php', 'social_tools.php'];
@@ -111,6 +218,43 @@
         </nav>
     </div>
     <div class="header-right">
+        <!-- Announcement Dropdown -->
+        <div class="announcement-dropdown dropdown">
+            <a href="#" class="announcement-icon" aria-label="View announcements">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </a>
+            <div class="dropdown-content announcement-content">
+                <div class="announcement-header">
+                    <h3>Announcements</h3>
+                    <span class="announcement-date">Today</span>
+                </div>
+                <a href="#" class="announcement-item">
+                    <i class="fas fa-info-circle"></i>
+                    <div class="announcement-text">
+                        <p>New health assessment feature available!</p>
+                        <small>2 hours ago</small>
+                    </div>
+                </a>
+                <a href="#" class="announcement-item">
+                    <i class="fas fa-star"></i>
+                    <div class="announcement-text">
+                        <p>Weekly wellness tips updated</p>
+                        <small>5 hours ago</small>
+                    </div>
+                </a>
+                <a href="#" class="announcement-item">
+                    <i class="fas fa-calendar"></i>
+                    <div class="announcement-text">
+                        <p>Upcoming maintenance scheduled</p>
+                        <small>1 day ago</small>
+                    </div>
+                </a>
+                <div class="announcement-footer">
+                    <a href="#" class="view-all">View All Announcements</a>
+                </div>
+            </div>
+        </div>
         <div class="user-info">
             <div class="user-profile">
                 <i class="fas fa-user-circle"></i>

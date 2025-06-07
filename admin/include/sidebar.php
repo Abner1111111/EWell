@@ -19,13 +19,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </li>
         
         <li class="menu-section">
-            <span>Quiz Management</span>
+            <span>Entertainment Management</span>
         </li>
         
         <li class="<?php echo $current_page === 'create_quiz.php' ? 'active' : ''; ?>">
             <a href="create_quiz.php">
             <i class="fas fa-tasks"></i>    
             <span>Manage Quizzes</span>
+            </a>
+        </li>
+        <li class="<?php echo $current_page === 'add_lecture_videos.php' ? 'active' : ''; ?>">
+            <a href="add_lecture_videos.php">
+            <i class="bi bi-play-btn-fill"></i>
+            <span>Add Lecture Videos</span>
             </a>
         </li>
       
