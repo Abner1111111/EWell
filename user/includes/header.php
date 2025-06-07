@@ -158,6 +158,101 @@
             transform: translateY(0);
         }
     }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+        .announcement-dropdown {
+            margin-right: 10px;
+        }
+
+        .announcement-icon {
+            font-size: 1.1rem;
+            padding: 6px;
+        }
+
+        .notification-badge {
+            top: -3px;
+            right: -3px;
+            font-size: 0.6rem;
+            padding: 1px 4px;
+            min-width: 16px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-profile {
+            display: none;
+        }
+
+        .logout-btn {
+            padding: 8px;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-btn span {
+            display: none;
+        }
+
+        .logout-btn i {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .announcement-dropdown .dropdown-content {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            width: 100%;
+            max-width: 100%;
+            border-radius: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .announcement-dropdown .dropdown-content.show {
+            transform: translateY(0);
+        }
+
+        .announcement-content {
+            max-height: calc(100vh - var(--header-height));
+            overflow-y: auto;
+        }
+
+        .announcement-item {
+            padding: 15px;
+        }
+
+        .announcement-text p {
+            font-size: 0.95rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .announcement-dropdown {
+            margin-right: 5px;
+        }
+
+        .announcement-icon {
+            font-size: 1rem;
+            padding: 5px;
+        }
+
+        .logout-btn {
+            width: 32px;
+            height: 32px;
+        }
+    }
 </style>
 <header class="main-header">
     <div class="header-left">
@@ -308,4 +403,33 @@
                 dropdownContent.style.display === 'block' ? 'none' : 'block';
         });
     }
+
+    // Handle announcement dropdown in mobile view
+    const announcementIcon = document.querySelector('.announcement-icon');
+    const announcementContent = document.querySelector('.announcement-dropdown .dropdown-content');
+
+    announcementIcon.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (window.innerWidth <= 768) {
+            announcementContent.classList.toggle('show');
+            // Close other dropdowns if open
+            document.querySelectorAll('.dropdown-content:not(.announcement-content)').forEach(content => {
+                content.style.display = 'none';
+            });
+        }
+    });
+
+    // Close announcement dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.announcement-dropdown') && window.innerWidth <= 768) {
+            announcementContent.classList.remove('show');
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            announcementContent.classList.remove('show');
+        }
+    });
 </script>

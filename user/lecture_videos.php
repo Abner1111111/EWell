@@ -186,6 +186,20 @@ include '../back_end/session.php';
             .video-description {
                 font-size: 0.85rem;
             }
+
+            .modal-content {
+                width: 95% !important;
+                margin: 0 auto !important;
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+            }
+
+            .close-modal {
+                right: 10px !important;
+                top: 10px !important;
+            }
         }
     </style>
 </head>
